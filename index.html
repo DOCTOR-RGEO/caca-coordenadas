@@ -42,7 +42,7 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      Explore coordenadas, analise quadrantes globais e descubra dados geográficos dos alvos.
+      Use o radar térmico: teste combinações e observe se a coordenada está fria ou quente!
     </p>
   </header>
 
@@ -126,6 +126,14 @@
           class="w-full py-2 px-3 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-md">
           <i class="fa-solid fa-location-dot"></i> Testar e Plotar no Mapa
         </button>
+
+        <!-- Radar de Proximidade Térmica (Quente / Frio) -->
+        <div id="thermalRadar" class="hidden mt-2 p-2.5 rounded-lg border transition-all text-xs">
+          <div class="flex items-center justify-between font-bold">
+            <span id="thermalStatus" class="flex items-center gap-1.5"></span>
+            <span id="thermalDistance" class="font-mono text-[11px]"></span>
+          </div>
+        </div>
       </div>
 
       <!-- Validação do Alvo -->
@@ -706,6 +714,72 @@
     let tempTestMarker = null;
     let persistentMarkersGroup = null;
 
+    // Cálculo da distância geodésica em quilômetros (Fórmula de Haversine)
+    function calculateDistanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Raio médio da Terra em km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    function getThermalLevel(distKm) {
+      if (distKm < 1) {
+        return {
+          label: "🔥 PEGANDO FOGO!",
+          desc: "Alvo exato alcançado!",
+          badgeClass: "bg-rose-950/90 border-rose-500 text-rose-300",
+          icon: "fa-solid fa-fire text-rose-500 animate-pulse"
+        };
+      } else if (distKm < 500) {
+        return {
+          label: "Muito quente!",
+          desc: "Você está muito próximo do alvo (mesma região/país)!",
+          badgeClass: "bg-orange-950/90 border-orange-500 text-orange-300",
+          icon: "fa-solid fa-temperature-arrow-up text-orange-400"
+        };
+      } else if (distKm < 1500) {
+        return {
+          label: "Quente!",
+          desc: "Você está no subcontinente correto!",
+          badgeClass: "bg-amber-950/90 border-amber-500 text-amber-300",
+          icon: "fa-solid fa-temperature-high text-amber-400"
+        };
+      } else if (distKm < 4000) {
+        return {
+          label: "Morno...",
+          desc: "Aproximando-se, mas ainda distante do alvo.",
+          badgeClass: "bg-yellow-950/90 border-yellow-500 text-yellow-300",
+          icon: "fa-solid fa-temperature-half text-yellow-400"
+        };
+      } else if (distKm < 8000) {
+        return {
+          label: "Frio!",
+          desc: "Distância considerável; examine a orientação dos hemisférios.",
+          badgeClass: "bg-sky-950/90 border-sky-500 text-sky-300",
+          icon: "fa-solid fa-temperature-low text-sky-400"
+        };
+      } else if (distKm < 12000) {
+        return {
+          label: "Muito frio!",
+          desc: "Você está em outro hemisfério ou continente distante.",
+          badgeClass: "bg-blue-950/90 border-blue-500 text-blue-300",
+          icon: "fa-solid fa-temperature-arrow-down text-blue-400"
+        };
+      } else {
+        return {
+          label: "❄️ Está congelando!",
+          desc: "Você está do lado oposto do planeta Terra!",
+          badgeClass: "bg-cyan-950/90 border-cyan-500 text-cyan-300",
+          icon: "fa-solid fa-snowflake text-cyan-400"
+        };
+      }
+    }
+
     function initMap() {
       mapInstance = L.map('map', {
         center: [15, 0],
@@ -758,6 +832,10 @@
       const fb = document.getElementById('resultFeedback');
       fb.classList.add('hidden');
 
+      // Oculta radar térmico
+      const radar = document.getElementById('thermalRadar');
+      radar.classList.add('hidden');
+
       if (tempTestMarker) {
         mapInstance.removeLayer(tempTestMarker);
         tempTestMarker = null;
@@ -785,10 +863,20 @@
         mapInstance.removeLayer(tempTestMarker);
       }
 
+      const dist = calculateDistanceKm(finalLat, finalLon, p.realLat, p.realLon);
+      const thermal = getThermalLevel(dist);
+
+      // Atualiza o radar térmico visual
+      const radar = document.getElementById('thermalRadar');
+      radar.classList.remove('hidden');
+      radar.className = `mt-2 p-2.5 rounded-lg border transition-all text-xs ${thermal.badgeClass}`;
+      document.getElementById('thermalStatus').innerHTML = `<i class="${thermal.icon}"></i> ${thermal.label} &mdash; <span class="font-normal opacity-90">${thermal.desc}</span>`;
+      document.getElementById('thermalDistance').innerText = `${Math.round(dist).toLocaleString('pt-BR')} km de distância`;
+
       const isCorrectCombination = (axis === p.correctAxis && quad === p.correctQuad);
 
       tempTestMarker = L.marker([finalLat, finalLon]).addTo(mapInstance);
-      mapInstance.setView([finalLat, finalLon], 12);
+      mapInstance.setView([finalLat, finalLon], isCorrectCombination ? 12 : 5);
 
       const hemLabelLat = finalLat >= 0 ? "Norte" : "Sul";
       const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
@@ -796,8 +884,8 @@
       if (isCorrectCombination) {
         tempTestMarker.bindPopup(`
           <div style="font-size: 12px; font-family: sans-serif; min-width: 190px;">
-            <div style="color: #0284c7; font-weight: bold; font-size: 11px; text-transform: uppercase;">
-              <i class="fa-solid fa-location-dot"></i> Alvo Encontrado!
+            <div style="color: #dc2626; font-weight: bold; font-size: 11px; text-transform: uppercase;">
+              🔥 PEGANDO FOGO! ALVO ENCONTRADO
             </div>
             <b style="color: #0f172a; font-size: 14px; display: block; margin-top: 2px;">
               ${p.canonical}
@@ -811,11 +899,14 @@
         `).openPopup();
       } else {
         tempTestMarker.bindPopup(`
-          <div style="font-size: 12px; font-family: sans-serif;">
-            <b style="color: #dc2626;">Ponto em Teste (Incorreto)</b><br>
-            Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
-            Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
-            <span style="color: #64748b; font-size: 11px;">Combinação fora do alvo. Alterne os eixos ou os quadrantes.</span>
+          <div style="font-size: 12px; font-family: sans-serif; min-width: 180px;">
+            <b>Ponto em Teste</b><br>
+            <div style="margin-top: 3px; font-size: 11px;">
+              <b>Status:</b> ${thermal.label}<br>
+              <b>Distância do Alvo:</b> ${Math.round(dist).toLocaleString('pt-BR')} km<br>
+              Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
+              Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})
+            </div>
           </div>
         `).openPopup();
       }
@@ -912,7 +1003,7 @@
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
             <i class="fa-solid fa-circle-xmark"></i> Nome incorreto!
           </div>
-          <div>Ajuste os quadrantes ou inverta os eixos e clique em <em>"Testar e Plotar no Mapa"</em> até o marcador revelar o local exato.</div>
+          <div>Acompanhe o radar térmico abaixo dos seletores e clique em <em>"Testar e Plotar no Mapa"</em> até o termômetro indicar <strong>"Pegando fogo"</strong>.</div>
         `;
       }
     }

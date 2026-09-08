@@ -42,7 +42,7 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      Alterne os 4 quadrantes globais, teste os eixos e construa o mapa com todos os pontos.
+      20 alvos pelo globo: teste quadrantes e eixos para localizar monumentos e paisagens naturais.
     </p>
   </header>
 
@@ -52,13 +52,13 @@
     <!-- Progresso e Pontuação -->
     <div class="mb-4">
       <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
-        <span id="cardCounter">Ponto 1 de 10</span>
+        <span id="cardCounter">Ponto 1 de 20</span>
         <span id="scoreBadge" class="bg-indigo-950/80 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-700/50">
           Pontos: <strong id="scoreVal" class="text-white">0</strong>
         </span>
       </div>
       <div class="w-full bg-slate-700/70 h-2.5 rounded-full overflow-hidden">
-        <div id="progressBar" class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full transition-all duration-500" style="width: 10%;"></div>
+        <div id="progressBar" class="bg-gradient-to-r from-sky-500 to-emerald-400 h-full transition-all duration-500" style="width: 5%;"></div>
       </div>
     </div>
 
@@ -71,7 +71,9 @@
           <span id="formatBadge" class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400">
             Formato: GMS
           </span>
-          <span class="text-[11px] text-slate-400 font-mono">Valores absolutos fornecidos</span>
+          <span id="typeBadge" class="text-[11px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600">
+            Tipo: Cultural
+          </span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 sm:gap-4 my-1">
@@ -130,14 +132,14 @@
       <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-1">
         <div>
           <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
-            Identificou o alvo pelo mapa? Digite o nome do monumento ou ponto turístico:
+            Identificou o local no mapa? Digite o nome do monumento ou atrativo natural:
           </label>
           <input 
             type="text" 
             id="monumentInput" 
             required 
             autocomplete="off"
-            placeholder="Ex: Torre Eiffel, Coliseu, Pirâmides de Gizé..." 
+            placeholder="Ex: Monte Fuji, Cataratas do Iguaçu, Coliseu..." 
             class="w-full px-3 py-2 bg-slate-950 border border-slate-600 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:outline-none"
           />
         </div>
@@ -163,7 +165,7 @@
 
     </div>
 
-    <!-- Mapa Integrado (permanece no container principal para ser reaproveitado na tela final) -->
+    <!-- Mapa Integrado -->
     <div id="mapContainer" class="mt-4 relative border border-slate-700 rounded-xl overflow-hidden shadow-inner">
       <div id="map"></div>
     </div>
@@ -175,7 +177,7 @@
       </div>
       <h2 class="text-2xl font-black text-white">Missão Concluída!</h2>
       <p class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto">
-        Todos os 10 alvos mundiais foram desvendados e registrados no globo terrestre. Analise no mapa abaixo a distribuição espacial dos pontos encontrados.
+        Todos os 20 pontos de interesse (10 histórico-culturais e 10 naturais) foram mapeados nos 4 quadrantes da Terra.
       </p>
 
       <div class="inline-block bg-slate-950 border border-slate-700 rounded-xl px-6 py-2">
@@ -199,10 +201,13 @@
   </footer>
 
   <script>
+    // 20 Pontos: 5 em cada quadrante (NL, NO, SL, SO) | 10 Histórico-Culturais e 10 Naturais
     const database = [
+      // --- QUADRANTE 1: NORTE / LESTE (N / L | + / +) ---
       {
         id: 1,
         type: "GMS",
+        category: "Histórico / Cultural",
         valA: "02° 17' 40''",
         valB: "48° 51' 30''",
         decA: 2.2944,
@@ -218,6 +223,7 @@
       {
         id: 2,
         type: "GMS",
+        category: "Histórico / Cultural",
         valA: "41° 53' 25''",
         valB: "12° 29' 32''",
         decA: 41.8902,
@@ -233,21 +239,57 @@
       {
         id: 3,
         type: "GMS",
-        valA: "78° 02' 31''",
-        valB: "27° 10' 30''",
-        decA: 78.0419,
-        decB: 27.1750,
-        canonical: "Taj Mahal",
-        accepted: ["taj mahal", "tajmahal"],
+        category: "Natural",
+        valA: "138° 43' 39''",
+        valB: "35° 21' 38''",
+        decA: 138.7275,
+        decB: 35.3606,
+        canonical: "Monte Fuji",
+        accepted: ["monte fuji", "fuji", "vulcão fuji", "fujisan"],
         correctAxis: "BA",
         correctQuad: "NL",
-        realLat: 27.1750,
-        realLon: 78.0419,
-        realText: "27° 10' 30'' N, 78° 02' 31'' L (Agra, Índia)"
+        realLat: 35.3606,
+        realLon: 138.7275,
+        realText: "35° 21' 38'' N, 138° 43' 39'' L (Honshu, Japão)"
       },
       {
         id: 4,
+        type: "GD",
+        category: "Natural",
+        valA: "86.9250",
+        valB: "27.9881",
+        decA: 86.9250,
+        decB: 27.9881,
+        canonical: "Monte Everest",
+        accepted: ["monte everest", "everest", "pico everest"],
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 27.9881,
+        realLon: 86.9250,
+        realText: "+27.9881, +86.9250 (Himalaia, Nepal/China)"
+      },
+      {
+        id: 5,
+        type: "GD",
+        category: "Natural",
+        valA: "35.5000",
+        valB: "31.5000",
+        decA: 35.5000,
+        decB: 31.5000,
+        canonical: "Mar Morto",
+        accepted: ["mar morto", "dead sea"],
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 31.5000,
+        realLon: 35.5000,
+        realText: "+31.5000, +35.5000 (Jordânia/Israel)"
+      },
+
+      // --- QUADRANTE 2: NORTE / OESTE (N / O | + / -) ---
+      {
+        id: 6,
         type: "GMS",
+        category: "Histórico / Cultural",
         valA: "40° 41' 21''",
         valB: "74° 02' 40''",
         decA: 40.6892,
@@ -261,14 +303,15 @@
         realText: "40° 41' 21'' N, 74° 02' 40'' O (Nova York, EUA)"
       },
       {
-        id: 5,
+        id: 7,
         type: "GMS",
+        category: "Histórico / Cultural",
         valA: "00° 07' 28''",
         valB: "51° 30' 03''",
         decA: 0.1245,
         decB: 51.5008,
         canonical: "Big Ben / Palácio de Westminster",
-        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
+        accepted: ["big ben", "bigben", "westminster", "palacio de westminster"],
         correctAxis: "BA",
         correctQuad: "NO",
         realLat: 51.5008,
@@ -276,8 +319,91 @@
         realText: "51° 30' 03'' N, 00° 07' 28'' O (Londres, Reino Unido)"
       },
       {
-        id: 6,
+        id: 8,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "88° 34' 04''",
+        valB: "20° 41' 01''",
+        decA: 88.5678,
+        decB: 20.6836,
+        canonical: "Chichén Itzá",
+        accepted: ["chichen itza", "chichen-itza", "chichén itzá", "piramide maia"],
+        correctAxis: "BA",
+        correctQuad: "NO",
+        realLat: 20.6836,
+        realLon: -88.5678,
+        realText: "20° 41' 01'' N, 88° 34' 04'' O (Iucatã, México)"
+      },
+      {
+        id: 9,
         type: "GD",
+        category: "Natural",
+        valA: "36.0544",
+        valB: "112.1401",
+        decA: 36.0544,
+        decB: 112.1401,
+        canonical: "Grand Canyon",
+        accepted: ["grand canyon", "grande canyon", "canyon do colorado"],
+        correctAxis: "AB",
+        correctQuad: "NO",
+        realLat: 36.0544,
+        realLon: -112.1401,
+        realText: "+36.0544, -112.1401 (Arizona, EUA)"
+      },
+      {
+        id: 10,
+        type: "GD",
+        category: "Natural",
+        valA: "43.0828",
+        valB: "79.0742",
+        decA: 43.0828,
+        decB: 79.0742,
+        canonical: "Cataratas do Niágara",
+        accepted: ["cataratas do niagara", "cataratas do niágara", "niagara falls"],
+        correctAxis: "AB",
+        correctQuad: "NO",
+        realLat: 43.0828,
+        realLon: -79.0742,
+        realText: "+43.0828, -79.0742 (EUA / Canadá)"
+      },
+
+      // --- QUADRANTE 3: SUL / OESTE (S / O | - / -) ---
+      {
+        id: 11,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "13° 09' 47''",
+        valB: "72° 32' 42''",
+        decA: 13.1631,
+        decB: 72.5450,
+        canonical: "Machu Picchu",
+        accepted: ["machu picchu", "machupicchu"],
+        correctAxis: "AB",
+        correctQuad: "SO",
+        realLat: -13.1631,
+        realLon: -72.5450,
+        realText: "13° 09' 47'' S, 72° 32' 42'' O (Cusco, Peru)"
+      },
+      {
+        id: 12,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "109° 20' 52''",
+        valB: "27° 06' 43''",
+        decA: 109.3478,
+        decB: 27.1119,
+        canonical: "Moais da Ilha de Páscoa (Rapa Nui)",
+        accepted: ["ilha de pascoa", "ilha de páscoa", "moais", "rapa nui", "moai"],
+        correctAxis: "BA",
+        correctQuad: "SO",
+        realLat: -27.1119,
+        realLon: -109.3478,
+        realText: "27° 06' 43'' S, 109° 20' 52'' O (Chile)"
+      },
+      {
+        id: 13,
+        type: "GD",
+        category: "Histórico / Cultural",
         valA: "43.2105",
         valB: "22.9519",
         decA: 43.2105,
@@ -291,23 +417,75 @@
         realText: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)"
       },
       {
-        id: 7,
+        id: 14,
         type: "GD",
-        valA: "13.1631",
-        valB: "72.5450",
-        decA: 13.1631,
-        decB: 72.5450,
-        canonical: "Machu Picchu",
-        accepted: ["machu picchu", "machupicchu"],
+        category: "Natural",
+        valA: "25.6953",
+        valB: "54.4367",
+        decA: 25.6953,
+        decB: 54.4367,
+        canonical: "Cataratas do Iguaçu",
+        accepted: ["cataratas do iguacu", "cataratas do iguaçu", "iguazu", "cataratas de iguazu"],
         correctAxis: "AB",
         correctQuad: "SO",
-        realLat: -13.1631,
-        realLon: -72.5450,
-        realText: "-13.1631, -72.5450 (Cusco, Peru)"
+        realLat: -25.6953,
+        realLon: -54.4367,
+        realText: "-25.6953, -54.4367 (Brasil / Argentina)"
       },
       {
-        id: 8,
+        id: 15,
         type: "GD",
+        category: "Natural",
+        valA: "50.5794",
+        valB: "73.0475",
+        decA: 50.5794,
+        decB: 73.0475,
+        canonical: "Geleira Perito Moreno",
+        accepted: ["perito moreno", "geleira perito moreno", "glaciar perito moreno"],
+        correctAxis: "AB",
+        correctQuad: "SO",
+        realLat: -50.5794,
+        realLon: -73.0475,
+        realText: "-50.5794, -73.0475 (Patagônia, Argentina)"
+      },
+
+      // --- QUADRANTE 4: SUL / LESTE (S / L | - / +) ---
+      {
+        id: 16,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "110° 12' 14''",
+        valB: "07° 36' 29''",
+        decA: 110.2039,
+        decB: 7.6079,
+        canonical: "Templo de Borobudur",
+        accepted: ["borobudur", "templo de borobudur", "candi borobudur"],
+        correctAxis: "BA",
+        correctQuad: "SL",
+        realLat: -7.6079,
+        realLon: 110.2039,
+        realText: "07° 36' 29'' S, 110° 12' 14'' L (Java, Indonésia)"
+      },
+      {
+        id: 17,
+        type: "GMS",
+        category: "Natural",
+        valA: "17° 55' 28''",
+        valB: "25° 51' 24''",
+        decA: 17.9244,
+        decB: 25.8567,
+        canonical: "Cataratas Vitória (Victoria Falls)",
+        accepted: ["cataratas vitoria", "cataratas vitória", "victoria falls"],
+        correctAxis: "AB",
+        correctQuad: "SL",
+        realLat: -17.9244,
+        realLon: 25.8567,
+        realText: "17° 55' 28'' S, 25° 51' 24'' L (Zâmbia / Zimbábue)"
+      },
+      {
+        id: 18,
+        type: "GD",
+        category: "Histórico / Cultural",
         valA: "151.2153",
         valB: "33.8568",
         decA: 151.2153,
@@ -321,38 +499,40 @@
         realText: "-33.8568, +151.2153 (Sydney, Austrália)"
       },
       {
-        id: 9,
+        id: 19,
         type: "GD",
-        valA: "29.9792",
-        valB: "31.1342",
-        decA: 29.9792,
-        decB: 31.1342,
-        canonical: "Pirâmides de Gizé",
-        accepted: ["piramides de gize", "piramides de gizé", "piramide de queops", "gize", "giza"],
+        category: "Natural",
+        valA: "25.3444",
+        valB: "131.0369",
+        decA: 25.3444,
+        decB: 131.0369,
+        canonical: "Uluru (Ayers Rock)",
+        accepted: ["uluru", "ayers rock"],
         correctAxis: "AB",
-        correctQuad: "NL",
-        realLat: 29.9792,
-        realLon: 31.1342,
-        realText: "+29.9792, +31.1342 (Gizé/Cairo, Egito)"
+        correctQuad: "SL",
+        realLat: -25.3444,
+        realLon: 131.0369,
+        realText: "-25.3444, +131.0369 (Território do Norte, Austrália)"
       },
       {
-        id: 10,
+        id: 20,
         type: "GD",
-        valA: "103.8670",
-        valB: "13.4125",
-        decA: 103.8670,
-        decB: 13.4125,
-        canonical: "Angkor Wat",
-        accepted: ["angkor wat", "angkor"],
-        correctAxis: "BA",
-        correctQuad: "NL",
-        realLat: 13.4125,
-        realLon: 103.8670,
-        realText: "+13.4125, +103.8670 (Siem Reap, Camboja)"
+        category: "Natural",
+        valA: "03.0674",
+        valB: "37.3556",
+        decA: 3.0674,
+        decB: 37.3556,
+        canonical: "Monte Kilimanjaro",
+        accepted: ["kilimanjaro", "monte kilimanjaro"],
+        correctAxis: "AB",
+        correctQuad: "SL",
+        realLat: -3.0674,
+        realLon: 37.3556,
+        realText: "-03.0674, +37.3556 (Tanzânia)"
       }
     ];
 
-    // Ícone verde fixo para pontos encontrados
+    // Ícone verde persistente para os pontos confirmados
     const greenFoundIcon = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -365,12 +545,12 @@
     let currentIdx = 0;
     let score = 0;
     let mapInstance = null;
-    let tempTestMarker = null;          // Marcador móvel para testes
-    let persistentMarkersGroup = null;  // Camada que mantém os pontos confirmados
+    let tempTestMarker = null;
+    let persistentMarkersGroup = null;
 
     function initMap() {
       mapInstance = L.map('map', {
-        center: [20, 0],
+        center: [15, 0],
         zoom: 2,
         minZoom: 2,
         maxZoom: 18
@@ -390,19 +570,26 @@
       document.getElementById('cardCounter').innerText = `Ponto ${currentIdx + 1} de ${database.length}`;
       document.getElementById('progressBar').style.width = `${((currentIdx + 1) / database.length) * 100}%`;
       
-      const badge = document.getElementById('formatBadge');
+      const badgeFormat = document.getElementById('formatBadge');
       if (p.type === 'GMS') {
-        badge.innerText = 'Formato: Graus, Minutos e Segundos';
-        badge.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400';
+        badgeFormat.innerText = 'Formato: Graus, Minutos e Segundos';
+        badgeFormat.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400';
       } else {
-        badge.innerText = 'Formato: Graus Decimais';
-        badge.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-sky-400';
+        badgeFormat.innerText = 'Formato: Graus Decimais';
+        badgeFormat.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-sky-400';
+      }
+
+      const badgeType = document.getElementById('typeBadge');
+      badgeType.innerText = `Tipo: ${p.category}`;
+      if (p.category === 'Natural') {
+        badgeType.className = 'text-[11px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-700/60';
+      } else {
+        badgeType.className = 'text-[11px] uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-indigo-950/80 text-indigo-300 border border-indigo-700/60';
       }
 
       document.getElementById('valA_display').innerText = p.valA;
       document.getElementById('valB_display').innerText = p.valB;
 
-      // Reseta campos do formulário
       const input = document.getElementById('monumentInput');
       input.value = '';
       input.disabled = false;
@@ -413,13 +600,12 @@
       const fb = document.getElementById('resultFeedback');
       fb.classList.add('hidden');
 
-      // Remove marcador temporário de teste
       if (tempTestMarker) {
         mapInstance.removeLayer(tempTestMarker);
         tempTestMarker = null;
       }
 
-      mapInstance.setView([20, 0], 2);
+      mapInstance.setView([15, 0], 2);
       setTimeout(() => mapInstance.invalidateSize(), 200);
     }
 
@@ -442,7 +628,7 @@
       }
 
       tempTestMarker = L.marker([finalLat, finalLon]).addTo(mapInstance);
-      mapInstance.setView([finalLat, finalLon], 13);
+      mapInstance.setView([finalLat, finalLon], 12);
 
       const hemLabelLat = finalLat >= 0 ? "Norte" : "Sul";
       const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
@@ -452,7 +638,7 @@
           <b>Ponto em Teste</b><br>
           Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
           Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
-          <span style="color: #64748b; font-size: 11px;">Examine a imagem para identificar o monumento.</span>
+          <span style="color: #64748b; font-size: 11px;">Analise a paisagem ou feição em redor.</span>
         </div>
       `).openPopup();
     }
@@ -480,19 +666,18 @@
       fb.classList.remove('hidden');
 
       if (isMatch) {
-        score += 10;
+        score += 5; // 20 pontos valendo 5 pontos cada = 100 pontos totais
         document.getElementById('scoreVal').innerText = score;
 
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
         fb.innerHTML = `
           <div class="font-bold text-emerald-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-check"></i> Correto! Monumento confirmado e registrado no mapa.
+            <i class="fa-solid fa-circle-check"></i> Correto! Ponto confirmado e registrado no mapa.
           </div>
-          <div><strong>Monumento:</strong> ${p.canonical}</div>
+          <div><strong>Local:</strong> ${p.canonical} (${p.category})</div>
           <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Oficiais:</strong> ${p.realText}</div>
         `;
 
-        // Trava inputs e libera botão de avanço
         document.getElementById('monumentInput').disabled = true;
         document.getElementById('btnCheck').classList.add('hidden');
         
@@ -501,17 +686,16 @@
         btnNext.classList.add('flex');
         btnNext.focus();
 
-        // Remove o marcador móvel de teste
         if (tempTestMarker) {
           mapInstance.removeLayer(tempTestMarker);
           tempTestMarker = null;
         }
 
-        // Insere o marcador permanente verde no grupo com nome e coordenadas
         const confirmedMarker = L.marker([p.realLat, p.realLon], { icon: greenFoundIcon });
         confirmedMarker.bindPopup(`
           <div style="font-size: 12px; font-family: sans-serif; min-width: 170px;">
             <b style="color: #047857; font-size: 13px;">✓ ${p.canonical}</b><br>
+            <span style="color: #64748b; font-size: 10px; text-transform: uppercase;">${p.category}</span>
             <div style="color: #334155; margin-top: 3px; font-size: 11px;">
               <b>Coordenadas:</b><br>${p.realText}
             </div>
@@ -519,7 +703,7 @@
         `);
         
         persistentMarkersGroup.addLayer(confirmedMarker);
-        mapInstance.setView([p.realLat, p.realLon], 14);
+        mapInstance.setView([p.realLat, p.realLon], 13);
         confirmedMarker.openPopup();
 
       } else {
@@ -528,7 +712,7 @@
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
             <i class="fa-solid fa-circle-xmark"></i> Nome não identificado ou incorreto!
           </div>
-          <div>Alterne os quadrantes ou inverta a ordem dos eixos e clique em <em>"Testar e Plotar no Mapa"</em> para verificar a área.</div>
+          <div>Alterne os quadrantes ou inverta os eixos e clique em <em>"Testar e Plotar no Mapa"</em> para verificar o alvo.</div>
         `;
       }
     }
@@ -547,7 +731,6 @@
       document.getElementById('completionScreen').classList.remove('hidden');
       document.getElementById('finalScoreVal').innerText = `${score} / 100 pts`;
 
-      // Atualiza o mapa para enquadrar todos os 10 pontos encontrados
       setTimeout(() => {
         mapInstance.invalidateSize();
         if (persistentMarkersGroup.getLayers().length > 0) {

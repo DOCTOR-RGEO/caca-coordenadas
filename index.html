@@ -11,22 +11,22 @@
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
-  <!-- Leaflet CSS & JS para o Mapa Interativo -->
+  <!-- Leaflet CSS & JS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <style>
     #map {
-      min-height: 280px;
-      height: 280px;
+      min-height: 320px;
+      height: 320px;
       width: 100%;
       border-radius: 0.75rem;
       z-index: 10;
     }
     @media (min-width: 640px) {
       #map {
-        min-height: 340px;
-        height: 340px;
+        min-height: 380px;
+        height: 380px;
       }
     }
   </style>
@@ -34,7 +34,7 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 font-sans">
 
   <!-- Cabeçalho -->
-  <header class="w-full max-w-2xl text-center my-3">
+  <header class="w-full max-w-2xl text-center my-2">
     <div class="inline-flex items-center gap-2 px-3 py-1 bg-sky-950/70 border border-sky-500/40 rounded-full text-sky-400 text-xs sm:text-sm font-semibold mb-2">
       <i class="fa-solid fa-compass"></i> Laboratório de Geografia & Cartografia
     </div>
@@ -42,14 +42,14 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      Monte os pares, defina as orientações e plote os pontos no mapa para localizar o monumento.
+      Alterne entre os 4 quadrantes do planeta, teste a ordem dos eixos e identifique o monumento no mapa.
     </p>
   </header>
 
   <!-- Painel Principal -->
   <main class="w-full max-w-2xl bg-slate-800/90 border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl backdrop-blur-sm relative">
 
-    <!-- Barra de Progresso e Pontuação -->
+    <!-- Progresso e Pontuação -->
     <div class="mb-4">
       <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
         <span id="cardCounter">Ponto 1 de 10</span>
@@ -62,80 +62,80 @@
       </div>
     </div>
 
-    <!-- Card de Coordenadas e Testes -->
+    <!-- Conteúdo do Desafio -->
     <div id="quizCard" class="space-y-4">
       
-      <!-- Dados Brutos Fornecidos -->
-      <div class="bg-slate-950/80 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
+      <!-- Dados Brutos -->
+      <div class="bg-slate-950/80 border border-slate-700 rounded-xl p-3 text-center">
         <div class="flex items-center justify-between mb-2">
           <span id="formatBadge" class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400">
             Formato: GMS
           </span>
-          <span class="text-[11px] text-slate-500 font-mono">Valores brutos</span>
+          <span class="text-[11px] text-slate-400 font-mono">Valores absolutos fornecidos</span>
         </div>
 
         <div class="grid grid-cols-2 gap-2 sm:gap-4 my-1">
-          <div class="bg-slate-900 border border-sky-500/30 rounded-lg p-2 sm:p-3">
-            <div class="text-[10px] text-sky-400 font-semibold uppercase">Valor A</div>
-            <div id="valA_display" class="font-mono text-sm sm:text-lg font-bold text-sky-200 mt-0.5">--</div>
+          <div class="bg-slate-900 border border-sky-500/30 rounded-lg p-2.5">
+            <div class="text-[10px] text-sky-400 font-bold uppercase">Valor A</div>
+            <div id="valA_display" class="font-mono text-sm sm:text-base font-bold text-sky-200 mt-0.5">--</div>
           </div>
-          <div class="bg-slate-900 border border-teal-500/30 rounded-lg p-2 sm:p-3">
-            <div class="text-[10px] text-teal-400 font-semibold uppercase">Valor B</div>
-            <div id="valB_display" class="font-mono text-sm sm:text-lg font-bold text-teal-200 mt-0.5">--</div>
+          <div class="bg-slate-900 border border-teal-500/30 rounded-lg p-2.5">
+            <div class="text-[10px] text-teal-400 font-bold uppercase">Valor B</div>
+            <div id="valB_display" class="font-mono text-sm sm:text-base font-bold text-teal-200 mt-0.5">--</div>
           </div>
         </div>
       </div>
 
-      <!-- Simulador de Ajuste de Coordenadas para o Mapa -->
-      <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 sm:p-4">
-        <div class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
-          <i class="fa-solid fa-sliders text-sky-400"></i> Ajuste dos Quadrantes para Teste no Mapa:
+      <!-- Simulador de Ajuste Cartográfico -->
+      <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 sm:p-4 space-y-3">
+        <div class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+          <i class="fa-solid fa-earth-americas text-sky-400"></i> Painel de Orientação e Plotagem:
         </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <!-- Eixo de Latitude -->
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Atribuição dos Eixos -->
           <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-700">
-            <label class="block text-[11px] text-slate-400 font-medium mb-1">Eixo Latitude ($\phi$):</label>
-            <div class="flex gap-2">
-              <select id="latSelectVal" class="w-2/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 text-slate-200 focus:ring-1 focus:ring-sky-400"></select>
-              <select id="latSelectHem" class="w-1/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 font-bold text-amber-300 focus:ring-1 focus:ring-sky-400">
-                <option value="1">N (+)</option>
-                <option value="-1">S (-)</option>
-              </select>
-            </div>
+            <label class="block text-[11px] text-slate-300 font-semibold mb-1">
+              1. Ordem dos Eixos:
+            </label>
+            <select id="axisOrderSelect" class="w-full bg-slate-950 border border-slate-600 text-xs rounded p-2 text-slate-200 focus:ring-1 focus:ring-sky-400">
+              <option value="AB">Latitude = Valor A | Longitude = Valor B</option>
+              <option value="BA" selected>Latitude = Valor B | Longitude = Valor A</option>
+            </select>
           </div>
 
-          <!-- Eixo de Longitude -->
+          <!-- Seleção dos 4 Quadrantes -->
           <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-700">
-            <label class="block text-[11px] text-slate-400 font-medium mb-1">Eixo Longitude ($\lambda$):</label>
-            <div class="flex gap-2">
-              <select id="lonSelectVal" class="w-2/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 text-slate-200 focus:ring-1 focus:ring-sky-400"></select>
-              <select id="lonSelectHem" class="w-1/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 font-bold text-teal-300 focus:ring-1 focus:ring-sky-400">
-                <option value="1">L / E (+)</option>
-                <option value="-1">O / W (-)</option>
-              </select>
-            </div>
+            <label class="block text-[11px] text-slate-300 font-semibold mb-1">
+              2. Quadrante Global (4 Possibilidades):
+            </label>
+            <select id="quadrantSelect" class="w-full bg-slate-950 border border-slate-600 text-xs rounded p-2 font-bold text-amber-300 focus:ring-1 focus:ring-sky-400">
+              <option value="NL">Quadrante 1: Norte / Leste (+ / +)</option>
+              <option value="NO">Quadrante 2: Norte / Oeste (+ / -)</option>
+              <option value="SL">Quadrante 3: Sul / Leste (- / +)</option>
+              <option value="SO">Quadrante 4: Sul / Oeste (- / -)</option>
+            </select>
           </div>
         </div>
 
         <button 
           type="button" 
-          onclick="plotCurrentSettings()"
-          class="w-full mt-3 py-2 px-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-600">
-          <i class="fa-solid fa-location-crosshairs text-sky-400"></i> Plotar Ponto no Mapa
+          onclick="plotCurrentCoordinates()"
+          class="w-full py-2 px-3 bg-sky-600 hover:bg-sky-500 active:bg-sky-700 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 shadow-md">
+          <i class="fa-solid fa-location-dot"></i> Testar e Plotar no Mapa
         </button>
       </div>
 
       <!-- Mapa Integrado -->
-      <div class="relative">
+      <div class="relative border border-slate-700 rounded-xl overflow-hidden shadow-inner">
         <div id="map"></div>
       </div>
 
-      <!-- Validação do Nome do Ponto Turístico -->
-      <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-2">
+      <!-- Validação do Alvo -->
+      <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-1">
         <div>
           <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
-            Reconheceu o local? Digite o nome do monumento ou ponto turístico:
+            Reconheceu o local pelo mapa? Digite o nome do monumento ou ponto turístico:
           </label>
           <input 
             type="text" 
@@ -150,7 +150,7 @@
         <button 
           type="submit" 
           id="btnCheck"
-          class="w-full py-2.5 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-md shadow-sky-500/20 flex items-center justify-center gap-2">
+          class="w-full py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2">
           <i class="fa-solid fa-check-double"></i> Confirmar Resposta
         </button>
       </form>
@@ -162,42 +162,41 @@
       <button 
         id="btnNextCard" 
         onclick="advanceCard()" 
-        class="w-full mt-2 py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-lg transition hidden items-center justify-center gap-2 shadow-md shadow-emerald-500/20">
+        class="w-full mt-2 py-2.5 px-4 bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs sm:text-sm rounded-lg transition hidden items-center justify-center gap-2 shadow-md shadow-indigo-500/20">
         Próximo Ponto <i class="fa-solid fa-arrow-right"></i>
       </button>
 
     </div>
 
-    <!-- Tela de Conclusão -->
+    <!-- Conclusão -->
     <div id="completionScreen" class="hidden text-center py-6">
       <div class="w-16 h-16 mx-auto bg-emerald-500/20 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-3">
         <i class="fa-solid fa-trophy"></i>
       </div>
-      <h2 class="text-2xl font-black text-white">Excelente Trabalho!</h2>
+      <h2 class="text-2xl font-black text-white">Desafio Finalizado!</h2>
       <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-sm mx-auto">
-        Todos os 10 monumentos foram localizados corretamente no mapa através da análise dos hemisférios.
+        A equipe concluiu o roteiro cartográfico e identificou todos os 10 alvos pelo globo.
       </p>
 
       <div class="bg-slate-950 border border-slate-700 rounded-xl p-3 my-4 max-w-xs mx-auto">
-        <div class="text-xs text-slate-400">Pontuação Total</div>
+        <div class="text-xs text-slate-400">Pontuação Obtida</div>
         <div class="text-3xl font-extrabold text-sky-400 mt-1" id="finalScoreVal">100 pts</div>
       </div>
 
       <button 
         onclick="restartAll()" 
-        class="py-2.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm rounded-lg transition inline-flex items-center gap-2">
-        <i class="fa-solid fa-rotate-right"></i> Reiniciar Jogo
+        class="py-2.5 px-6 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm rounded-lg transition inline-flex items-center gap-2">
+        <i class="fa-solid fa-rotate-right"></i> Jogar Novamente
       </button>
     </div>
 
   </main>
 
   <footer class="w-full max-w-2xl text-center my-3 text-[11px] text-slate-500">
-    Desenvolvido para práticas de Cartografia Temática e Orientação Global.
+    Atividade prática de Cartografia e Sistemas de Coordenadas Geográficas.
   </footer>
 
   <script>
-    // Base de dados dos pontos com conversão decimal exata para plotagem no Leaflet
     const database = [
       {
         id: 1,
@@ -208,10 +207,8 @@
         decB: 48.8583,
         canonical: "Torre Eiffel",
         accepted: ["torre eiffel", "eiffel", "eiffel tower", "tour eiffel"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "NL",      // Norte / Leste
         realText: "48° 51' 30'' N, 02° 17' 40'' L (Paris, França)"
       },
       {
@@ -223,10 +220,8 @@
         decB: 12.4922,
         canonical: "Coliseu",
         accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum"],
-        correctLatVal: "A",
-        correctLonVal: "B",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "AB",      // Lat = A, Lon = B
+        correctQuad: "NL",      // Norte / Leste
         realText: "41° 53' 25'' N, 12° 29' 32'' L (Roma, Itália)"
       },
       {
@@ -238,10 +233,8 @@
         decB: 27.1750,
         canonical: "Taj Mahal",
         accepted: ["taj mahal", "tajmahal"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "NL",      // Norte / Leste
         realText: "27° 10' 30'' N, 78° 02' 31'' L (Agra, Índia)"
       },
       {
@@ -253,10 +246,8 @@
         decB: 74.0445,
         canonical: "Estátua da Liberdade",
         accepted: ["estatua da liberdade", "estátua da liberdade", "statue of liberty"],
-        correctLatVal: "A",
-        correctLonVal: "B",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: -1,  // Oeste (-)
+        correctAxis: "AB",      // Lat = A, Lon = B
+        correctQuad: "NO",      // Norte / Oeste
         realText: "40° 41' 21'' N, 74° 02' 40'' O (Nova York, EUA)"
       },
       {
@@ -264,14 +255,10 @@
         type: "GMS",
         valA: "00° 07' 28''",
         valB: "51° 30' 03''",
-        decA: 0.1245,
-        decB: 51.5008,
         canonical: "Big Ben / Palácio de Westminster",
         accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: -1,  // Oeste (-)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "NO",      // Norte / Oeste
         realText: "51° 30' 03'' N, 00° 07' 28'' O (Londres, Reino Unido)"
       },
       {
@@ -283,10 +270,8 @@
         decB: 22.9519,
         canonical: "Cristo Redentor",
         accepted: ["cristo redentor", "cristo", "corcovado"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: -1,  // Sul (-)
-        correctLonHem: -1,  // Oeste (-)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "SO",      // Sul / Oeste
         realText: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)"
       },
       {
@@ -298,10 +283,8 @@
         decB: 72.5450,
         canonical: "Machu Picchu",
         accepted: ["machu picchu", "machupicchu"],
-        correctLatVal: "A",
-        correctLonVal: "B",
-        correctLatHem: -1,  // Sul (-)
-        correctLonHem: -1,  // Oeste (-)
+        correctAxis: "AB",      // Lat = A, Lon = B
+        correctQuad: "SO",      // Sul / Oeste
         realText: "-13.1631, -72.5450 (Cusco, Peru)"
       },
       {
@@ -313,10 +296,8 @@
         decB: 33.8568,
         canonical: "Ópera de Sydney",
         accepted: ["opera de sydney", "ópera de sydney", "sydney opera house"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: -1,  // Sul (-)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "SL",      // Sul / Leste
         realText: "-33.8568, +151.2153 (Sydney, Austrália)"
       },
       {
@@ -328,10 +309,8 @@
         decB: 31.1342,
         canonical: "Pirâmides de Gizé",
         accepted: ["piramides de gize", "piramides de gizé", "piramide de queops", "gize", "giza"],
-        correctLatVal: "A",
-        correctLonVal: "B",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "AB",      // Lat = A, Lon = B
+        correctQuad: "NL",      // Norte / Leste
         realText: "+29.9792, +31.1342 (Gizé/Cairo, Egito)"
       },
       {
@@ -343,10 +322,8 @@
         decB: 13.4125,
         canonical: "Angkor Wat",
         accepted: ["angkor wat", "angkor"],
-        correctLatVal: "B",
-        correctLonVal: "A",
-        correctLatHem: 1,   // Norte (+)
-        correctLonHem: 1,   // Leste (+)
+        correctAxis: "BA",      // Lat = B, Lon = A
+        correctQuad: "NL",      // Norte / Leste
         realText: "+13.4125, +103.8670 (Siem Reap, Camboja)"
       }
     ];
@@ -356,19 +333,18 @@
     let mapInstance = null;
     let markerInstance = null;
 
-    // Inicialização do Mapa
     function initMap() {
+      // Cria mapa Leaflet com tiles do OpenStreetMap oficial (com rotulação completa de cidades e monumentos)
       mapInstance = L.map('map', {
-        center: [15, 0],
+        center: [20, 0],
         zoom: 2,
-        minZoom: 1,
+        minZoom: 2,
         maxZoom: 18
       });
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap &copy; CARTO',
-        subdomains: 'abcd',
-        maxZoom: 19
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(mapInstance);
     }
 
@@ -390,20 +366,7 @@
       document.getElementById('valA_display').innerText = p.valA;
       document.getElementById('valB_display').innerText = p.valB;
 
-      // Popula selects de teste
-      const latSelect = document.getElementById('latSelectVal');
-      const lonSelect = document.getElementById('lonSelectVal');
-
-      latSelect.innerHTML = `
-        <option value="A">Valor A (${p.valA})</option>
-        <option value="B" selected>Valor B (${p.valB})</option>
-      `;
-      lonSelect.innerHTML = `
-        <option value="A" selected>Valor A (${p.valA})</option>
-        <option value="B">Valor B (${p.valB})</option>
-      `;
-
-      // Reseta formulário e estados visuais
+      // Reseta campos do formulário
       const input = document.getElementById('monumentInput');
       input.value = '';
       input.disabled = false;
@@ -414,7 +377,7 @@
       const fb = document.getElementById('resultFeedback');
       fb.classList.add('hidden');
 
-      // Reseta posição inicial do mapa
+      // Limpa marcadores anteriores e reinicia visão global
       if (markerInstance) {
         mapInstance.removeLayer(markerInstance);
         markerInstance = null;
@@ -423,28 +386,42 @@
       setTimeout(() => mapInstance.invalidateSize(), 200);
     }
 
-    function plotCurrentSettings() {
+    function plotCurrentCoordinates() {
       const p = database[currentIdx];
-      const latChoice = document.getElementById('latSelectVal').value;
-      const lonChoice = document.getElementById('lonSelectVal').value;
-      const latHem = parseFloat(document.getElementById('latSelectHem').value);
-      const lonHem = parseFloat(document.getElementById('lonSelectHem').value);
+      const axis = document.getElementById('axisOrderSelect').value;
+      const quad = document.getElementById('quadrantSelect').value;
 
-      if (latChoice === lonChoice) {
-        alert("Você selecionou o mesmo valor para Latitude e Longitude! Escolha um para cada eixo.");
-        return;
-      }
+      // Determina os valores numéricos de Latitude e Longitude
+      let latVal = axis === "AB" ? p.decA : p.decB;
+      let lonVal = axis === "AB" ? p.decB : p.decA;
 
-      const numLat = (latChoice === 'A' ? p.decA : p.decB) * latHem;
-      const numLon = (lonChoice === 'A' ? p.decA : p.decB) * lonHem;
+      // Aplica os sinais com base no quadrante selecionado
+      let latSign = (quad === "NL" || quad === "NO") ? 1 : -1;
+      let lonSign = (quad === "NL" || quad === "SL") ? 1 : -1;
+
+      let finalLat = latVal * latSign;
+      let finalLon = lonVal * lonSign;
 
       if (markerInstance) {
         mapInstance.removeLayer(markerInstance);
       }
 
-      markerInstance = L.marker([numLat, numLon]).addTo(mapInstance);
-      mapInstance.setView([numLat, numLon], 14);
-      markerInstance.bindPopup(`<b>Ponto Testado:</b><br>Lat: ${numLat.toFixed(4)}<br>Lon: ${numLon.toFixed(4)}`).openPopup();
+      markerInstance = L.marker([finalLat, finalLon]).addTo(mapInstance);
+      
+      // Ajusta o zoom para nível de visualização da feição
+      mapInstance.setView([finalLat, finalLon], 13);
+
+      const hemLabelLat = finalLat >= 0 ? "Norte" : "Sul";
+      const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
+
+      markerInstance.bindPopup(`
+        <div style="font-size: 12px; font-family: sans-serif;">
+          <b>Ponto Testado</b><br>
+          Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
+          Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
+          <span style="color: #64748b; font-size: 11px;">Aproxime ou afaste o zoom para analisar a área ao redor.</span>
+        </div>
+      `).openPopup();
     }
 
     function normalizeText(txt) {
@@ -476,13 +453,13 @@
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
         fb.innerHTML = `
           <div class="font-bold text-emerald-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-check"></i> Correto! Monumento identificado.
+            <i class="fa-solid fa-circle-check"></i> Correto! Monumento confirmado.
           </div>
-          <div><strong>Local:</strong> ${p.canonical}</div>
+          <div><strong>Localização:</strong> ${p.canonical}</div>
           <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Reais:</strong> ${p.realText}</div>
         `;
 
-        // Trava inputs e libera avanço
+        // Bloqueia nova entrada no card atual
         document.getElementById('monumentInput').disabled = true;
         document.getElementById('btnCheck').classList.add('hidden');
         
@@ -491,21 +468,18 @@
         btnNext.classList.add('flex');
         btnNext.focus();
 
-        // Plota automaticamente a localização correta oficial no mapa
-        const trueLat = (p.correctLatVal === 'A' ? p.decA : p.decB) * p.correctLatHem;
-        const trueLon = (p.correctLonVal === 'A' ? p.decA : p.decB) * p.correctLonHem;
-        if (markerInstance) mapInstance.removeLayer(markerInstance);
-        markerInstance = L.marker([trueLat, trueLon]).addTo(mapInstance);
-        mapInstance.setView([trueLat, trueLon], 15);
-        markerInstance.bindPopup(`<b>${p.canonical}</b><br>${p.realText}`).openPopup();
+        // Posiciona no quadrante exato oficial
+        document.getElementById('axisOrderSelect').value = p.correctAxis;
+        document.getElementById('quadrantSelect').value = p.correctQuad;
+        plotCurrentCoordinates();
 
       } else {
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-rose-950/80 border-rose-500/50 text-rose-300';
         fb.innerHTML = `
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-xmark"></i> Incorreto ou não identificado!
+            <i class="fa-solid fa-circle-xmark"></i> Nome não identificado ou incorreto!
           </div>
-          <div>Altere os quadrantes (N/S, L/O) ou inverta os eixos e clique em <em>"Plotar no Mapa"</em> para verificar o local onde caiu.</div>
+          <div>Teste os outros 3 quadrantes ou inverta a ordem dos eixos para localizar a feição terrestre no mapa.</div>
         `;
       }
     }

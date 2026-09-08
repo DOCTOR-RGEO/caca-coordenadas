@@ -4,39 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Desafio Cartográfico: Caçadores de Coordenadas</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <!-- Leaflet CSS & JS para o Mapa Interativo -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <style>
-    @keyframes pulseSoft {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
+    #map {
+      min-height: 280px;
+      height: 280px;
+      width: 100%;
+      border-radius: 0.75rem;
+      z-index: 10;
     }
-    .card-active {
-      animation: pulseSoft 3s infinite ease-in-out;
+    @media (min-width: 640px) {
+      #map {
+        min-height: 340px;
+        height: 340px;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 font-sans">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 font-sans">
 
-  <!-- Header -->
-  <header class="w-full max-w-2xl text-center my-4">
+  <!-- Cabeçalho -->
+  <header class="w-full max-w-2xl text-center my-3">
     <div class="inline-flex items-center gap-2 px-3 py-1 bg-sky-950/70 border border-sky-500/40 rounded-full text-sky-400 text-xs sm:text-sm font-semibold mb-2">
-      <i class="fa-solid fa-compass animate-spin" style="animation-duration: 12s;"></i>
-      Laboratório de Geografia & Cartografia
+      <i class="fa-solid fa-compass"></i> Laboratório de Geografia & Cartografia
     </div>
     <h1 class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300">
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      Abra o <strong>Google Earth</strong> ou <strong>Maps</strong>, teste as combinações de hemisférios e descubra o monumento oculto!
+      Monte os pares, defina as orientações e plote os pontos no mapa para localizar o monumento.
     </p>
   </header>
 
-  <!-- Main Game Container -->
-  <main class="w-full max-w-xl bg-slate-800/90 border border-slate-700/80 rounded-2xl p-5 sm:p-7 shadow-2xl backdrop-blur-sm relative">
+  <!-- Painel Principal -->
+  <main class="w-full max-w-2xl bg-slate-800/90 border border-slate-700/80 rounded-2xl p-4 sm:p-6 shadow-2xl backdrop-blur-sm relative">
 
-    <!-- Progress Bar & Score -->
-    <div class="mb-5">
+    <!-- Barra de Progresso e Pontuação -->
+    <div class="mb-4">
       <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
         <span id="cardCounter">Ponto 1 de 10</span>
         <span id="scoreBadge" class="bg-indigo-950/80 text-indigo-300 px-2.5 py-0.5 rounded-full border border-indigo-700/50">
@@ -48,262 +62,393 @@
       </div>
     </div>
 
-    <!-- Active Card Display -->
-    <div id="quizCard" class="card-active bg-gradient-to-b from-slate-850 to-slate-900 border border-slate-700 rounded-xl p-6 text-center shadow-inner relative overflow-hidden">
-      <div class="absolute top-2 right-3 text-slate-600 text-3xl opacity-30 select-none">
-        <i class="fa-solid fa-earth-americas"></i>
-      </div>
-
-      <span id="formatBadge" class="inline-block text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded bg-slate-800 border border-slate-600 text-amber-400 mb-4">
-        Formato: Graus, Minutos e Segundos
-      </span>
-
-      <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Par Numérico Bruto:</div>
+    <!-- Card de Coordenadas e Testes -->
+    <div id="quizCard" class="space-y-4">
       
-      <!-- Coordinate Values -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 my-2">
-        <div class="w-full sm:w-1/2 bg-slate-950/70 border border-sky-500/30 rounded-lg p-3">
-          <div class="text-[10px] text-sky-400 font-medium">VALOR A</div>
-          <div id="coordA" class="font-mono text-lg sm:text-xl font-bold text-sky-200 mt-0.5">--</div>
+      <!-- Dados Brutos Fornecidos -->
+      <div class="bg-slate-950/80 border border-slate-700 rounded-xl p-3 sm:p-4 text-center">
+        <div class="flex items-center justify-between mb-2">
+          <span id="formatBadge" class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400">
+            Formato: GMS
+          </span>
+          <span class="text-[11px] text-slate-500 font-mono">Valores brutos</span>
         </div>
-        <div class="w-full sm:w-1/2 bg-slate-950/70 border border-teal-500/30 rounded-lg p-3">
-          <div class="text-[10px] text-teal-400 font-medium">VALOR B</div>
-          <div id="coordB" class="font-mono text-lg sm:text-xl font-bold text-teal-200 mt-0.5">--</div>
+
+        <div class="grid grid-cols-2 gap-2 sm:gap-4 my-1">
+          <div class="bg-slate-900 border border-sky-500/30 rounded-lg p-2 sm:p-3">
+            <div class="text-[10px] text-sky-400 font-semibold uppercase">Valor A</div>
+            <div id="valA_display" class="font-mono text-sm sm:text-lg font-bold text-sky-200 mt-0.5">--</div>
+          </div>
+          <div class="bg-slate-900 border border-teal-500/30 rounded-lg p-2 sm:p-3">
+            <div class="text-[10px] text-teal-400 font-semibold uppercase">Valor B</div>
+            <div id="valB_display" class="font-mono text-sm sm:text-lg font-bold text-teal-200 mt-0.5">--</div>
+          </div>
         </div>
       </div>
 
-      <p class="text-slate-400 text-xs mt-3 italic">
-        Atenção: A ordem pode ser (Latitude, Longitude) ou o inverso, e a orientação (N/S, L/O ou +/-) não foi informada!
-      </p>
+      <!-- Simulador de Ajuste de Coordenadas para o Mapa -->
+      <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 sm:p-4">
+        <div class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
+          <i class="fa-solid fa-sliders text-sky-400"></i> Ajuste dos Quadrantes para Teste no Mapa:
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Eixo de Latitude -->
+          <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-700">
+            <label class="block text-[11px] text-slate-400 font-medium mb-1">Eixo Latitude ($\phi$):</label>
+            <div class="flex gap-2">
+              <select id="latSelectVal" class="w-2/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 text-slate-200 focus:ring-1 focus:ring-sky-400"></select>
+              <select id="latSelectHem" class="w-1/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 font-bold text-amber-300 focus:ring-1 focus:ring-sky-400">
+                <option value="1">N (+)</option>
+                <option value="-1">S (-)</option>
+              </select>
+            </div>
+          </div>
 
-      <!-- Input Form -->
-      <form id="answerForm" onsubmit="handleCheck(event)" class="mt-6 space-y-3">
+          <!-- Eixo de Longitude -->
+          <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-700">
+            <label class="block text-[11px] text-slate-400 font-medium mb-1">Eixo Longitude ($\lambda$):</label>
+            <div class="flex gap-2">
+              <select id="lonSelectVal" class="w-2/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 text-slate-200 focus:ring-1 focus:ring-sky-400"></select>
+              <select id="lonSelectHem" class="w-1/3 bg-slate-950 border border-slate-600 text-xs rounded p-1.5 font-bold text-teal-300 focus:ring-1 focus:ring-sky-400">
+                <option value="1">L / E (+)</option>
+                <option value="-1">O / W (-)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          onclick="plotCurrentSettings()"
+          class="w-full mt-3 py-2 px-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 border border-slate-600">
+          <i class="fa-solid fa-location-crosshairs text-sky-400"></i> Plotar Ponto no Mapa
+        </button>
+      </div>
+
+      <!-- Mapa Integrado -->
+      <div class="relative">
+        <div id="map"></div>
+      </div>
+
+      <!-- Validação do Nome do Ponto Turístico -->
+      <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-2">
         <div>
-          <label for="userGuess" class="block text-xs font-semibold text-slate-300 text-left mb-1.5">
-            Qual é o monumento, ponto turístico ou cidade?
+          <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
+            Reconheceu o local? Digite o nome do monumento ou ponto turístico:
           </label>
           <input 
             type="text" 
-            id="userGuess" 
+            id="monumentInput" 
             required 
             autocomplete="off"
-            placeholder="Ex: Torre Eiffel, Cristo Redentor..." 
-            class="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-600 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent transition-all text-sm font-medium"
+            placeholder="Ex: Torre Eiffel, Coliseu, Pirâmides de Gizé..." 
+            class="w-full px-3 py-2 bg-slate-950 border border-slate-600 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:outline-none"
           />
         </div>
 
         <button 
           type="submit" 
-          id="btnSubmit"
-          class="w-full py-2.5 px-4 rounded-lg bg-sky-500 hover:bg-sky-400 active:bg-sky-600 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2">
-          <i class="fa-solid fa-satellite-dish"></i>
-          Validar Localização
+          id="btnCheck"
+          class="w-full py-2.5 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs sm:text-sm rounded-lg transition shadow-md shadow-sky-500/20 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-check-double"></i> Confirmar Resposta
         </button>
       </form>
 
-      <!-- Feedback Area -->
-      <div id="feedback" class="mt-4 hidden p-3 rounded-lg text-xs leading-relaxed text-left border"></div>
+      <!-- Feedback -->
+      <div id="resultFeedback" class="hidden p-3 rounded-lg text-xs leading-relaxed border"></div>
 
-      <!-- Next Button (hidden until correct) -->
+      <!-- Próximo Card -->
       <button 
-        id="btnNext" 
-        onclick="nextCard()" 
-        class="w-full mt-3 py-2.5 px-4 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all hidden items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+        id="btnNextCard" 
+        onclick="advanceCard()" 
+        class="w-full mt-2 py-2.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs sm:text-sm rounded-lg transition hidden items-center justify-center gap-2 shadow-md shadow-emerald-500/20">
         Próximo Ponto <i class="fa-solid fa-arrow-right"></i>
       </button>
 
-      <!-- Hint Accordion -->
-      <div class="mt-5 border-t border-slate-700/60 pt-3">
-        <button 
-          type="button" 
-          onclick="toggleHint()" 
-          class="text-xs text-slate-400 hover:text-sky-300 transition-colors inline-flex items-center gap-1.5">
-          <i class="fa-regular fa-lightbulb text-amber-400"></i>
-          <span id="hintBtnText">Precisa de uma dica de hemisfério?</span>
-        </button>
-        <div id="hintBox" class="hidden mt-2 p-2.5 bg-slate-950/60 border border-slate-700/70 rounded text-[11px] text-amber-300 text-left"></div>
-      </div>
-
     </div>
 
-    <!-- Final Results Screen (Hidden initially) -->
-    <div id="endScreen" class="hidden text-center py-6">
-      <div class="w-16 h-16 mx-auto bg-emerald-500/20 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-4">
+    <!-- Tela de Conclusão -->
+    <div id="completionScreen" class="hidden text-center py-6">
+      <div class="w-16 h-16 mx-auto bg-emerald-500/20 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-3">
         <i class="fa-solid fa-trophy"></i>
       </div>
-      <h2 class="text-2xl font-black text-white">Missão Concluída!</h2>
-      <p class="text-slate-300 text-sm mt-2 max-w-sm mx-auto">
-        A equipe explorou com sucesso os quatro quadrantes do globo e desvendou todas as 10 coordenadas misteriosas!
+      <h2 class="text-2xl font-black text-white">Excelente Trabalho!</h2>
+      <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-sm mx-auto">
+        Todos os 10 monumentos foram localizados corretamente no mapa através da análise dos hemisférios.
       </p>
 
-      <div class="bg-slate-950/70 border border-slate-700 rounded-xl p-4 my-5 max-w-xs mx-auto">
-        <div class="text-xs text-slate-400">Pontuação Final</div>
-        <div class="text-3xl font-extrabold text-sky-400 mt-1" id="finalScoreDisplay">0 pts</div>
+      <div class="bg-slate-950 border border-slate-700 rounded-xl p-3 my-4 max-w-xs mx-auto">
+        <div class="text-xs text-slate-400">Pontuação Total</div>
+        <div class="text-3xl font-extrabold text-sky-400 mt-1" id="finalScoreVal">100 pts</div>
       </div>
 
       <button 
-        onclick="restartQuiz()" 
-        class="py-2.5 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-all inline-flex items-center gap-2 shadow-lg shadow-indigo-600/30">
-        <i class="fa-solid fa-rotate-right"></i>
-        Jogar Novamente
+        onclick="restartAll()" 
+        class="py-2.5 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm rounded-lg transition inline-flex items-center gap-2">
+        <i class="fa-solid fa-rotate-right"></i> Reiniciar Jogo
       </button>
     </div>
 
   </main>
 
-  <!-- Instructions Footer -->
-  <footer class="w-full max-w-xl text-center my-4 text-xs text-slate-500 space-y-1">
-    <div>Dica: Use <strong>+ / -</strong> para graus decimais e <strong>N / S / E / W</strong> no Google Earth.</div>
-    <div>Atividade desenvolvida para dinâmicas de Cartografia e Orientação Espacial.</div>
+  <footer class="w-full max-w-2xl text-center my-3 text-[11px] text-slate-500">
+    Desenvolvido para práticas de Cartografia Temática e Orientação Global.
   </footer>
 
   <script>
-    const pointsData = [
+    // Base de dados dos pontos com conversão decimal exata para plotagem no Leaflet
+    const database = [
       {
         id: 1,
         type: "GMS",
         valA: "02° 17' 40''",
         valB: "48° 51' 30''",
+        decA: 2.2944,
+        decB: 48.8583,
         canonical: "Torre Eiffel",
         accepted: ["torre eiffel", "eiffel", "eiffel tower", "tour eiffel"],
-        locationReal: "48° 51' 30'' N, 02° 17' 40'' E (Paris, França)",
-        hint: "O monumento fica no Hemisfério Norte e a leste do Meridiano de Greenwich (N / E)."
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: 1,   // Leste (+)
+        realText: "48° 51' 30'' N, 02° 17' 40'' L (Paris, França)"
       },
       {
         id: 2,
         type: "GMS",
         valA: "41° 53' 25''",
         valB: "12° 29' 32''",
+        decA: 41.8902,
+        decB: 12.4922,
         canonical: "Coliseu",
-        accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum", "roma"],
-        locationReal: "41° 53' 25'' N, 12° 29' 32'' E (Roma, Itália)",
-        hint: "Fica no Hemisfério Norte e no Hemisfério Oriental (N / E), berço de um antigo império."
+        accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum"],
+        correctLatVal: "A",
+        correctLonVal: "B",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: 1,   // Leste (+)
+        realText: "41° 53' 25'' N, 12° 29' 32'' L (Roma, Itália)"
       },
       {
         id: 3,
         type: "GMS",
         valA: "78° 02' 31''",
         valB: "27° 10' 30''",
+        decA: 78.0419,
+        decB: 27.1750,
         canonical: "Taj Mahal",
         accepted: ["taj mahal", "tajmahal"],
-        locationReal: "27° 10' 30'' N, 78° 02' 31'' E (Agra, Índia)",
-        hint: "O monumento está no Hemisfério Norte e no Hemisfério Oriental (N / E), na Ásia Meridional."
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: 1,   // Leste (+)
+        realText: "27° 10' 30'' N, 78° 02' 31'' L (Agra, Índia)"
       },
       {
         id: 4,
         type: "GMS",
         valA: "40° 41' 21''",
         valB: "74° 02' 40''",
+        decA: 40.6892,
+        decB: 74.0445,
         canonical: "Estátua da Liberdade",
-        accepted: ["estatua da liberdade", "estátua da liberdade", "statue of liberty", "liberty island"],
-        locationReal: "40° 41' 21'' N, 74° 02' 40'' W (Nova York, EUA)",
-        hint: "Fica no Hemisfério Norte e no Hemisfério Ocidental (N / W ou N / O)."
+        accepted: ["estatua da liberdade", "estátua da liberdade", "statue of liberty"],
+        correctLatVal: "A",
+        correctLonVal: "B",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: -1,  // Oeste (-)
+        realText: "40° 41' 21'' N, 74° 02' 40'' O (Nova York, EUA)"
       },
       {
         id: 5,
         type: "GMS",
         valA: "00° 07' 28''",
         valB: "51° 30' 03''",
+        decA: 0.1245,
+        decB: 51.5008,
         canonical: "Big Ben / Palácio de Westminster",
-        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower", "torre elizabeth"],
-        locationReal: "51° 30' 03'' N, 00° 07' 28'' W (Londres, Reino Unido)",
-        hint: "Fica a poucos minutos a oeste do Meridiano de Greenwich e no Hemisfério Norte (N / W)."
+        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: -1,  // Oeste (-)
+        realText: "51° 30' 03'' N, 00° 07' 28'' O (Londres, Reino Unido)"
       },
       {
         id: 6,
         type: "GD",
         valA: "43.2105",
         valB: "22.9519",
+        decA: 43.2105,
+        decB: 22.9519,
         canonical: "Cristo Redentor",
-        accepted: ["cristo redentor", "cristo", "corcovado", "cristo redentor - rio de janeiro"],
-        locationReal: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)",
-        hint: "Ambos os eixos exigem sinal negativo (-) pois o ponto está no Sul e no Ocidente."
+        accepted: ["cristo redentor", "cristo", "corcovado"],
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: -1,  // Sul (-)
+        correctLonHem: -1,  // Oeste (-)
+        realText: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)"
       },
       {
         id: 7,
         type: "GD",
         valA: "13.1631",
         valB: "72.5450",
+        decA: 13.1631,
+        decB: 72.5450,
         canonical: "Machu Picchu",
-        accepted: ["machu picchu", "machupicchu", "cidade inca"],
-        locationReal: "-13.1631, -72.5450 (Cusco, Peru)",
-        hint: "Fica nos Andes da América do Sul, ou seja, dois sinais negativos (- / -)."
+        accepted: ["machu picchu", "machupicchu"],
+        correctLatVal: "A",
+        correctLonVal: "B",
+        correctLatHem: -1,  // Sul (-)
+        correctLonHem: -1,  // Oeste (-)
+        realText: "-13.1631, -72.5450 (Cusco, Peru)"
       },
       {
         id: 8,
         type: "GD",
         valA: "151.2153",
         valB: "33.8568",
+        decA: 151.2153,
+        decB: 33.8568,
         canonical: "Ópera de Sydney",
-        accepted: ["opera de sydney", "ópera de sydney", "sydney opera house", "teatro de opera de sydney", "baia de sydney"],
-        locationReal: "-33.8568, +151.2153 (Sydney, Austrália)",
-        hint: "Latitude negativa (Sul) e Longitude positiva (Leste da Oceania)."
+        accepted: ["opera de sydney", "ópera de sydney", "sydney opera house"],
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: -1,  // Sul (-)
+        correctLonHem: 1,   // Leste (+)
+        realText: "-33.8568, +151.2153 (Sydney, Austrália)"
       },
       {
         id: 9,
         type: "GD",
         valA: "29.9792",
         valB: "31.1342",
+        decA: 29.9792,
+        decB: 31.1342,
         canonical: "Pirâmides de Gizé",
-        accepted: ["piramides de gize", "piramides de gizé", "piramide de quelps", "gizé", "gize", "giza pyrimids", "pirâmides de gizé"],
-        locationReal: "+29.9792, +31.1342 (Cairo/Gizé, Egito)",
-        hint: "Ambas as coordenadas são positivas (+ / +), situadas no norte da África."
+        accepted: ["piramides de gize", "piramides de gizé", "piramide de queops", "gize", "giza"],
+        correctLatVal: "A",
+        correctLonVal: "B",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: 1,   // Leste (+)
+        realText: "+29.9792, +31.1342 (Gizé/Cairo, Egito)"
       },
       {
         id: 10,
         type: "GD",
         valA: "103.8670",
         valB: "13.4125",
+        decA: 103.8670,
+        decB: 13.4125,
         canonical: "Angkor Wat",
-        accepted: ["angkor wat", "angkor", "templo de angkor wat"],
-        locationReal: "+13.4125, +103.8670 (Siem Reap, Camboja)",
-        hint: "Duas coordenadas com sinal positivo (+ / +), no Sudeste Asiático."
+        accepted: ["angkor wat", "angkor"],
+        correctLatVal: "B",
+        correctLonVal: "A",
+        correctLatHem: 1,   // Norte (+)
+        correctLonHem: 1,   // Leste (+)
+        realText: "+13.4125, +103.8670 (Siem Reap, Camboja)"
       }
     ];
 
-    let currentIndex = 0;
+    let currentIdx = 0;
     let score = 0;
-    let hintsUsed = 0;
+    let mapInstance = null;
+    let markerInstance = null;
 
-    function renderCard() {
-      const p = pointsData[currentIndex];
-      document.getElementById('cardCounter').innerText = `Ponto ${currentIndex + 1} de ${pointsData.length}`;
-      document.getElementById('progressBar').style.width = `${((currentIndex + 1) / pointsData.length) * 100}%`;
-      
-      const formatBadge = document.getElementById('formatBadge');
-      if (p.type === 'GMS') {
-        formatBadge.innerText = 'Formato: Graus, Minutos e Segundos';
-        formatBadge.className = 'inline-block text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded bg-slate-800 border border-slate-600 text-amber-400 mb-4';
-      } else {
-        formatBadge.innerText = 'Formato: Graus Decimais';
-        formatBadge.className = 'inline-block text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded bg-slate-800 border border-slate-600 text-sky-400 mb-4';
-      }
+    // Inicialização do Mapa
+    function initMap() {
+      mapInstance = L.map('map', {
+        center: [15, 0],
+        zoom: 2,
+        minZoom: 1,
+        maxZoom: 18
+      });
 
-      document.getElementById('coordA').innerText = p.valA;
-      document.getElementById('coordB').innerText = p.valB;
-
-      // Reset inputs & feedback
-      const input = document.getElementById('userGuess');
-      input.value = '';
-      input.disabled = false;
-      input.focus();
-
-      document.getElementById('btnSubmit').classList.remove('hidden');
-      document.getElementById('btnNext').classList.add('hidden');
-      document.getElementById('btnNext').classList.remove('flex');
-
-      const feedback = document.getElementById('feedback');
-      feedback.classList.add('hidden');
-      feedback.className = 'mt-4 hidden p-3 rounded-lg text-xs leading-relaxed text-left border';
-
-      // Reset hint
-      document.getElementById('hintBox').classList.add('hidden');
-      document.getElementById('hintBox').innerText = p.hint;
-      document.getElementById('hintBtnText').innerText = 'Precisa de uma dica de hemisfério?';
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+      }).addTo(mapInstance);
     }
 
-    function cleanString(str) {
-      return str
+    function renderCurrentPoint() {
+      const p = database[currentIdx];
+      
+      document.getElementById('cardCounter').innerText = `Ponto ${currentIdx + 1} de ${database.length}`;
+      document.getElementById('progressBar').style.width = `${((currentIdx + 1) / database.length) * 100}%`;
+      
+      const badge = document.getElementById('formatBadge');
+      if (p.type === 'GMS') {
+        badge.innerText = 'Formato: Graus, Minutos e Segundos';
+        badge.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400';
+      } else {
+        badge.innerText = 'Formato: Graus Decimais';
+        badge.className = 'text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-sky-400';
+      }
+
+      document.getElementById('valA_display').innerText = p.valA;
+      document.getElementById('valB_display').innerText = p.valB;
+
+      // Popula selects de teste
+      const latSelect = document.getElementById('latSelectVal');
+      const lonSelect = document.getElementById('lonSelectVal');
+
+      latSelect.innerHTML = `
+        <option value="A">Valor A (${p.valA})</option>
+        <option value="B" selected>Valor B (${p.valB})</option>
+      `;
+      lonSelect.innerHTML = `
+        <option value="A" selected>Valor A (${p.valA})</option>
+        <option value="B">Valor B (${p.valB})</option>
+      `;
+
+      // Reseta formulário e estados visuais
+      const input = document.getElementById('monumentInput');
+      input.value = '';
+      input.disabled = false;
+      document.getElementById('btnCheck').classList.remove('hidden');
+      document.getElementById('btnNextCard').classList.add('hidden');
+      document.getElementById('btnNextCard').classList.remove('flex');
+
+      const fb = document.getElementById('resultFeedback');
+      fb.classList.add('hidden');
+
+      // Reseta posição inicial do mapa
+      if (markerInstance) {
+        mapInstance.removeLayer(markerInstance);
+        markerInstance = null;
+      }
+      mapInstance.setView([20, 0], 2);
+      setTimeout(() => mapInstance.invalidateSize(), 200);
+    }
+
+    function plotCurrentSettings() {
+      const p = database[currentIdx];
+      const latChoice = document.getElementById('latSelectVal').value;
+      const lonChoice = document.getElementById('lonSelectVal').value;
+      const latHem = parseFloat(document.getElementById('latSelectHem').value);
+      const lonHem = parseFloat(document.getElementById('lonSelectHem').value);
+
+      if (latChoice === lonChoice) {
+        alert("Você selecionou o mesmo valor para Latitude e Longitude! Escolha um para cada eixo.");
+        return;
+      }
+
+      const numLat = (latChoice === 'A' ? p.decA : p.decB) * latHem;
+      const numLon = (lonChoice === 'A' ? p.decA : p.decB) * lonHem;
+
+      if (markerInstance) {
+        mapInstance.removeLayer(markerInstance);
+      }
+
+      markerInstance = L.marker([numLat, numLon]).addTo(mapInstance);
+      mapInstance.setView([numLat, numLon], 14);
+      markerInstance.bindPopup(`<b>Ponto Testado:</b><br>Lat: ${numLat.toFixed(4)}<br>Lon: ${numLon.toFixed(4)}`).openPopup();
+    }
+
+    function normalizeText(txt) {
+      return txt
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -311,108 +456,84 @@
         .trim();
     }
 
-    function handleCheck(e) {
+    function handleValidation(e) {
       e.preventDefault();
-      const p = pointsData[currentIndex];
-      const rawGuess = document.getElementById('userGuess').value;
-      const guess = cleanString(rawGuess);
+      const p = database[currentIdx];
+      const input = normalizeText(document.getElementById('monumentInput').value);
 
-      const isCorrect = p.accepted.some(acc => {
-        const cleanAcc = cleanString(acc);
-        return guess.includes(cleanAcc) || cleanAcc.includes(guess);
+      const isMatch = p.accepted.some(cand => {
+        const clean = normalizeText(cand);
+        return input.includes(clean) || clean.includes(input);
       });
 
-      const feedback = document.getElementById('feedback');
-      feedback.classList.remove('hidden');
+      const fb = document.getElementById('resultFeedback');
+      fb.classList.remove('hidden');
 
-      if (isCorrect) {
+      if (isMatch) {
         score += 10;
         document.getElementById('scoreVal').innerText = score;
 
-        feedback.className = 'mt-4 p-3 rounded-lg text-xs leading-relaxed text-left border bg-emerald-950/70 border-emerald-500/50 text-emerald-300';
-        feedback.innerHTML = `
+        fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
+        fb.innerHTML = `
           <div class="font-bold text-emerald-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-check"></i> Coordenada Confirmada!
+            <i class="fa-solid fa-circle-check"></i> Correto! Monumento identificado.
           </div>
-          <div><strong>Monumento:</strong> ${p.canonical}</div>
-          <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Posição exata no Google Earth:</strong> ${p.locationReal}</div>
+          <div><strong>Local:</strong> ${p.canonical}</div>
+          <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Reais:</strong> ${p.realText}</div>
         `;
 
-        document.getElementById('userGuess').disabled = true;
-        document.getElementById('btnSubmit').classList.add('hidden');
+        // Trava inputs e libera avanço
+        document.getElementById('monumentInput').disabled = true;
+        document.getElementById('btnCheck').classList.add('hidden');
         
-        const nextBtn = document.getElementById('btnNext');
-        nextBtn.classList.remove('hidden');
-        nextBtn.classList.add('flex');
-        nextBtn.focus();
+        const btnNext = document.getElementById('btnNextCard');
+        btnNext.classList.remove('hidden');
+        btnNext.classList.add('flex');
+        btnNext.focus();
+
+        // Plota automaticamente a localização correta oficial no mapa
+        const trueLat = (p.correctLatVal === 'A' ? p.decA : p.decB) * p.correctLatHem;
+        const trueLon = (p.correctLonVal === 'A' ? p.decA : p.decB) * p.correctLonHem;
+        if (markerInstance) mapInstance.removeLayer(markerInstance);
+        markerInstance = L.marker([trueLat, trueLon]).addTo(mapInstance);
+        mapInstance.setView([trueLat, trueLon], 15);
+        markerInstance.bindPopup(`<b>${p.canonical}</b><br>${p.realText}`).openPopup();
+
       } else {
-        feedback.className = 'mt-4 p-3 rounded-lg text-xs leading-relaxed text-left border bg-rose-950/70 border-rose-500/50 text-rose-300';
-        feedback.innerHTML = `
+        fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-rose-950/80 border-rose-500/50 text-rose-300';
+        fb.innerHTML = `
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-xmark"></i> Local incorreto ou não identificado!
+            <i class="fa-solid fa-circle-xmark"></i> Incorreto ou não identificado!
           </div>
-          <div>Verifique se você inverteu a ordem de <em>Latitude</em> e <em>Longitude</em> ou teste os outros 3 quadrantes no globo.</div>
+          <div>Altere os quadrantes (N/S, L/O) ou inverta os eixos e clique em <em>"Plotar no Mapa"</em> para verificar o local onde caiu.</div>
         `;
       }
     }
 
-    function toggleHint() {
-      const hintBox = document.getElementById('hintBox');
-      const isHidden = hintBox.classList.contains('hidden');
-      if (isHidden) {
-        hintBox.classList.remove('hidden');
-        document.getElementById('hintBtnText').innerText = 'Ocultar dica';
-        hintsUsed++;
+    function advanceCard() {
+      if (currentIdx < database.length - 1) {
+        currentIdx++;
+        renderCurrentPoint();
       } else {
-        hintBox.classList.add('hidden');
-        document.getElementById('hintBtnText').innerText = 'Precisa de uma dica de hemisfério?';
+        document.getElementById('quizCard').classList.add('hidden');
+        document.getElementById('completionScreen').classList.remove('hidden');
+        document.getElementById('finalScoreVal').innerText = `${score} / 100 pts`;
       }
     }
 
-    function nextCard() {
-      if (currentIndex < pointsData.length - 1) {
-        currentIndex++;
-        renderCard();
-      } else {
-        showFinalScreen();
-      }
-    }
-
-    function showFinalScreen() {
-      document.getElementById('quizCard').classList.add('hidden');
-      document.getElementById('endScreen').classList.remove('hidden');
-      document.getElementById('finalScoreDisplay').innerText = `${score} / 100 pts`;
-    }
-
-    function restartQuiz() {
-      currentIndex = 0;
+    function restartAll() {
+      currentIdx = 0;
       score = 0;
-      hintsUsed = 0;
       document.getElementById('scoreVal').innerText = '0';
-      document.getElementById('endScreen').classList.add('hidden');
+      document.getElementById('completionScreen').classList.add('hidden');
       document.getElementById('quizCard').classList.remove('hidden');
-      renderCard();
+      renderCurrentPoint();
     }
 
-    // Initialize the quiz on load
     window.onload = () => {
-      renderCard();
+      initMap();
+      renderCurrentPoint();
     };
   </script>
 </body>
 </html>
-```eof
-
-### O que foi criado no aplicativo:
-
-1. **Card a Card com Proibição de Revelação Prematura:** 
-   * Apenas os valores **A** e **B** são exibidos na tela, sem qualquer indicação de hemisfério, sinal algébrico ($+$ ou $-$) ou ordem (se A é latitude ou longitude).
-   * O card só avança quando a equipe digita o nome correto do monumento ou ponto turístico correspondente.
-2. **Dois Formatos Didáticos:**
-   * **Cards 1 a 5:** Valores em Graus, Minutos e Segundos (GMS).
-   * **Cards 6 a 10:** Valores em Graus Decimais (GD).
-3. **Validação Flexível de Texto:**
-   * Aceita variações comuns (como "Torre Eiffel", "Eiffel", "Coliseu", "Ópera de Sydney", etc.), ignorando acentuações e letras maiúsculas/minúsculas.
-4. **Como compartilhar com seus alunos:**
-   * Você pode salvar o arquivo `.html` e enviá-lo diretamente aos alunos para abrir em qualquer navegador (computador, celular ou tablet).
-   * Se preferir hospedar online gratuitamente para ter um link direto (URL), basta subir esse arquivo único em serviços como **GitHub Pages**, **Vercel**, **Netlify** ou **Google Drive (com hospedagem web)**.

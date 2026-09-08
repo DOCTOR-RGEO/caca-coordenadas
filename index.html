@@ -42,7 +42,7 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      Alterne entre os 4 quadrantes do planeta, teste a ordem dos eixos e identifique o monumento no mapa.
+      Alterne os 4 quadrantes globais, teste os eixos e construa o mapa com todos os pontos.
     </p>
   </header>
 
@@ -93,7 +93,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <!-- Atribuição dos Eixos -->
+          <!-- Ordem dos Eixos -->
           <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-700">
             <label class="block text-[11px] text-slate-300 font-semibold mb-1">
               1. Ordem dos Eixos:
@@ -126,16 +126,11 @@
         </button>
       </div>
 
-      <!-- Mapa Integrado -->
-      <div class="relative border border-slate-700 rounded-xl overflow-hidden shadow-inner">
-        <div id="map"></div>
-      </div>
-
       <!-- Validação do Alvo -->
       <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-1">
         <div>
           <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
-            Reconheceu o local pelo mapa? Digite o nome do monumento ou ponto turístico:
+            Identificou o alvo pelo mapa? Digite o nome do monumento ou ponto turístico:
           </label>
           <input 
             type="text" 
@@ -168,26 +163,33 @@
 
     </div>
 
-    <!-- Conclusão -->
-    <div id="completionScreen" class="hidden text-center py-6">
-      <div class="w-16 h-16 mx-auto bg-emerald-500/20 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 text-2xl mb-3">
+    <!-- Mapa Integrado (permanece no container principal para ser reaproveitado na tela final) -->
+    <div id="mapContainer" class="mt-4 relative border border-slate-700 rounded-xl overflow-hidden shadow-inner">
+      <div id="map"></div>
+    </div>
+
+    <!-- Tela de Conclusão Final -->
+    <div id="completionScreen" class="hidden text-center py-4 space-y-4">
+      <div class="w-14 h-14 mx-auto bg-emerald-500/20 border border-emerald-500/50 rounded-full flex items-center justify-center text-emerald-400 text-2xl">
         <i class="fa-solid fa-trophy"></i>
       </div>
-      <h2 class="text-2xl font-black text-white">Desafio Finalizado!</h2>
-      <p class="text-slate-300 text-xs sm:text-sm mt-2 max-w-sm mx-auto">
-        A equipe concluiu o roteiro cartográfico e identificou todos os 10 alvos pelo globo.
+      <h2 class="text-2xl font-black text-white">Missão Concluída!</h2>
+      <p class="text-slate-300 text-xs sm:text-sm max-w-md mx-auto">
+        Todos os 10 alvos mundiais foram desvendados e registrados no globo terrestre. Analise no mapa abaixo a distribuição espacial dos pontos encontrados.
       </p>
 
-      <div class="bg-slate-950 border border-slate-700 rounded-xl p-3 my-4 max-w-xs mx-auto">
-        <div class="text-xs text-slate-400">Pontuação Obtida</div>
-        <div class="text-3xl font-extrabold text-sky-400 mt-1" id="finalScoreVal">100 pts</div>
+      <div class="inline-block bg-slate-950 border border-slate-700 rounded-xl px-6 py-2">
+        <div class="text-xs text-slate-400">Pontuação Total</div>
+        <div class="text-2xl font-extrabold text-sky-400 mt-0.5" id="finalScoreVal">100 pts</div>
       </div>
 
-      <button 
-        onclick="restartAll()" 
-        class="py-2.5 px-6 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm rounded-lg transition inline-flex items-center gap-2">
-        <i class="fa-solid fa-rotate-right"></i> Jogar Novamente
-      </button>
+      <div class="pt-2">
+        <button 
+          onclick="restartAll()" 
+          class="py-2.5 px-6 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm rounded-lg transition inline-flex items-center gap-2 shadow-lg">
+          <i class="fa-solid fa-rotate-right"></i> Reiniciar Desafio
+        </button>
+      </div>
     </div>
 
   </main>
@@ -207,8 +209,10 @@
         decB: 48.8583,
         canonical: "Torre Eiffel",
         accepted: ["torre eiffel", "eiffel", "eiffel tower", "tour eiffel"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "NL",      // Norte / Leste
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 48.8583,
+        realLon: 2.2944,
         realText: "48° 51' 30'' N, 02° 17' 40'' L (Paris, França)"
       },
       {
@@ -220,8 +224,10 @@
         decB: 12.4922,
         canonical: "Coliseu",
         accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum"],
-        correctAxis: "AB",      // Lat = A, Lon = B
-        correctQuad: "NL",      // Norte / Leste
+        correctAxis: "AB",
+        correctQuad: "NL",
+        realLat: 41.8902,
+        realLon: 12.4922,
         realText: "41° 53' 25'' N, 12° 29' 32'' L (Roma, Itália)"
       },
       {
@@ -233,8 +239,10 @@
         decB: 27.1750,
         canonical: "Taj Mahal",
         accepted: ["taj mahal", "tajmahal"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "NL",      // Norte / Leste
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 27.1750,
+        realLon: 78.0419,
         realText: "27° 10' 30'' N, 78° 02' 31'' L (Agra, Índia)"
       },
       {
@@ -246,8 +254,10 @@
         decB: 74.0445,
         canonical: "Estátua da Liberdade",
         accepted: ["estatua da liberdade", "estátua da liberdade", "statue of liberty"],
-        correctAxis: "AB",      // Lat = A, Lon = B
-        correctQuad: "NO",      // Norte / Oeste
+        correctAxis: "AB",
+        correctQuad: "NO",
+        realLat: 40.6892,
+        realLon: -74.0445,
         realText: "40° 41' 21'' N, 74° 02' 40'' O (Nova York, EUA)"
       },
       {
@@ -255,10 +265,14 @@
         type: "GMS",
         valA: "00° 07' 28''",
         valB: "51° 30' 03''",
+        decA: 0.1245,
+        decB: 51.5008,
         canonical: "Big Ben / Palácio de Westminster",
         accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "NO",      // Norte / Oeste
+        correctAxis: "BA",
+        correctQuad: "NO",
+        realLat: 51.5008,
+        realLon: -0.1245,
         realText: "51° 30' 03'' N, 00° 07' 28'' O (Londres, Reino Unido)"
       },
       {
@@ -270,8 +284,10 @@
         decB: 22.9519,
         canonical: "Cristo Redentor",
         accepted: ["cristo redentor", "cristo", "corcovado"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "SO",      // Sul / Oeste
+        correctAxis: "BA",
+        correctQuad: "SO",
+        realLat: -22.9519,
+        realLon: -43.2105,
         realText: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)"
       },
       {
@@ -283,8 +299,10 @@
         decB: 72.5450,
         canonical: "Machu Picchu",
         accepted: ["machu picchu", "machupicchu"],
-        correctAxis: "AB",      // Lat = A, Lon = B
-        correctQuad: "SO",      // Sul / Oeste
+        correctAxis: "AB",
+        correctQuad: "SO",
+        realLat: -13.1631,
+        realLon: -72.5450,
         realText: "-13.1631, -72.5450 (Cusco, Peru)"
       },
       {
@@ -296,8 +314,10 @@
         decB: 33.8568,
         canonical: "Ópera de Sydney",
         accepted: ["opera de sydney", "ópera de sydney", "sydney opera house"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "SL",      // Sul / Leste
+        correctAxis: "BA",
+        correctQuad: "SL",
+        realLat: -33.8568,
+        realLon: 151.2153,
         realText: "-33.8568, +151.2153 (Sydney, Austrália)"
       },
       {
@@ -309,8 +329,10 @@
         decB: 31.1342,
         canonical: "Pirâmides de Gizé",
         accepted: ["piramides de gize", "piramides de gizé", "piramide de queops", "gize", "giza"],
-        correctAxis: "AB",      // Lat = A, Lon = B
-        correctQuad: "NL",      // Norte / Leste
+        correctAxis: "AB",
+        correctQuad: "NL",
+        realLat: 29.9792,
+        realLon: 31.1342,
         realText: "+29.9792, +31.1342 (Gizé/Cairo, Egito)"
       },
       {
@@ -322,19 +344,31 @@
         decB: 13.4125,
         canonical: "Angkor Wat",
         accepted: ["angkor wat", "angkor"],
-        correctAxis: "BA",      // Lat = B, Lon = A
-        correctQuad: "NL",      // Norte / Leste
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 13.4125,
+        realLon: 103.8670,
         realText: "+13.4125, +103.8670 (Siem Reap, Camboja)"
       }
     ];
 
+    // Ícone verde fixo para pontos encontrados
+    const greenFoundIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+
     let currentIdx = 0;
     let score = 0;
     let mapInstance = null;
-    let markerInstance = null;
+    let tempTestMarker = null;          // Marcador móvel para testes
+    let persistentMarkersGroup = null;  // Camada que mantém os pontos confirmados
 
     function initMap() {
-      // Cria mapa Leaflet com tiles do OpenStreetMap oficial (com rotulação completa de cidades e monumentos)
       mapInstance = L.map('map', {
         center: [20, 0],
         zoom: 2,
@@ -346,6 +380,8 @@
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(mapInstance);
+
+      persistentMarkersGroup = L.featureGroup().addTo(mapInstance);
     }
 
     function renderCurrentPoint() {
@@ -377,11 +413,12 @@
       const fb = document.getElementById('resultFeedback');
       fb.classList.add('hidden');
 
-      // Limpa marcadores anteriores e reinicia visão global
-      if (markerInstance) {
-        mapInstance.removeLayer(markerInstance);
-        markerInstance = null;
+      // Remove marcador temporário de teste
+      if (tempTestMarker) {
+        mapInstance.removeLayer(tempTestMarker);
+        tempTestMarker = null;
       }
+
       mapInstance.setView([20, 0], 2);
       setTimeout(() => mapInstance.invalidateSize(), 200);
     }
@@ -391,35 +428,31 @@
       const axis = document.getElementById('axisOrderSelect').value;
       const quad = document.getElementById('quadrantSelect').value;
 
-      // Determina os valores numéricos de Latitude e Longitude
       let latVal = axis === "AB" ? p.decA : p.decB;
       let lonVal = axis === "AB" ? p.decB : p.decA;
 
-      // Aplica os sinais com base no quadrante selecionado
       let latSign = (quad === "NL" || quad === "NO") ? 1 : -1;
       let lonSign = (quad === "NL" || quad === "SL") ? 1 : -1;
 
       let finalLat = latVal * latSign;
       let finalLon = lonVal * lonSign;
 
-      if (markerInstance) {
-        mapInstance.removeLayer(markerInstance);
+      if (tempTestMarker) {
+        mapInstance.removeLayer(tempTestMarker);
       }
 
-      markerInstance = L.marker([finalLat, finalLon]).addTo(mapInstance);
-      
-      // Ajusta o zoom para nível de visualização da feição
+      tempTestMarker = L.marker([finalLat, finalLon]).addTo(mapInstance);
       mapInstance.setView([finalLat, finalLon], 13);
 
       const hemLabelLat = finalLat >= 0 ? "Norte" : "Sul";
       const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
 
-      markerInstance.bindPopup(`
+      tempTestMarker.bindPopup(`
         <div style="font-size: 12px; font-family: sans-serif;">
-          <b>Ponto Testado</b><br>
+          <b>Ponto em Teste</b><br>
           Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
           Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
-          <span style="color: #64748b; font-size: 11px;">Aproxime ou afaste o zoom para analisar a área ao redor.</span>
+          <span style="color: #64748b; font-size: 11px;">Examine a imagem para identificar o monumento.</span>
         </div>
       `).openPopup();
     }
@@ -453,13 +486,13 @@
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
         fb.innerHTML = `
           <div class="font-bold text-emerald-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-check"></i> Correto! Monumento confirmado.
+            <i class="fa-solid fa-circle-check"></i> Correto! Monumento confirmado e registrado no mapa.
           </div>
-          <div><strong>Localização:</strong> ${p.canonical}</div>
-          <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Reais:</strong> ${p.realText}</div>
+          <div><strong>Monumento:</strong> ${p.canonical}</div>
+          <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Oficiais:</strong> ${p.realText}</div>
         `;
 
-        // Bloqueia nova entrada no card atual
+        // Trava inputs e libera botão de avanço
         document.getElementById('monumentInput').disabled = true;
         document.getElementById('btnCheck').classList.add('hidden');
         
@@ -468,10 +501,26 @@
         btnNext.classList.add('flex');
         btnNext.focus();
 
-        // Posiciona no quadrante exato oficial
-        document.getElementById('axisOrderSelect').value = p.correctAxis;
-        document.getElementById('quadrantSelect').value = p.correctQuad;
-        plotCurrentCoordinates();
+        // Remove o marcador móvel de teste
+        if (tempTestMarker) {
+          mapInstance.removeLayer(tempTestMarker);
+          tempTestMarker = null;
+        }
+
+        // Insere o marcador permanente verde no grupo com nome e coordenadas
+        const confirmedMarker = L.marker([p.realLat, p.realLon], { icon: greenFoundIcon });
+        confirmedMarker.bindPopup(`
+          <div style="font-size: 12px; font-family: sans-serif; min-width: 170px;">
+            <b style="color: #047857; font-size: 13px;">✓ ${p.canonical}</b><br>
+            <div style="color: #334155; margin-top: 3px; font-size: 11px;">
+              <b>Coordenadas:</b><br>${p.realText}
+            </div>
+          </div>
+        `);
+        
+        persistentMarkersGroup.addLayer(confirmedMarker);
+        mapInstance.setView([p.realLat, p.realLon], 14);
+        confirmedMarker.openPopup();
 
       } else {
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-rose-950/80 border-rose-500/50 text-rose-300';
@@ -479,7 +528,7 @@
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
             <i class="fa-solid fa-circle-xmark"></i> Nome não identificado ou incorreto!
           </div>
-          <div>Teste os outros 3 quadrantes ou inverta a ordem dos eixos para localizar a feição terrestre no mapa.</div>
+          <div>Alterne os quadrantes ou inverta a ordem dos eixos e clique em <em>"Testar e Plotar no Mapa"</em> para verificar a área.</div>
         `;
       }
     }
@@ -489,15 +538,32 @@
         currentIdx++;
         renderCurrentPoint();
       } else {
-        document.getElementById('quizCard').classList.add('hidden');
-        document.getElementById('completionScreen').classList.remove('hidden');
-        document.getElementById('finalScoreVal').innerText = `${score} / 100 pts`;
+        showFinalScreen();
       }
+    }
+
+    function showFinalScreen() {
+      document.getElementById('quizCard').classList.add('hidden');
+      document.getElementById('completionScreen').classList.remove('hidden');
+      document.getElementById('finalScoreVal').innerText = `${score} / 100 pts`;
+
+      // Atualiza o mapa para enquadrar todos os 10 pontos encontrados
+      setTimeout(() => {
+        mapInstance.invalidateSize();
+        if (persistentMarkersGroup.getLayers().length > 0) {
+          mapInstance.fitBounds(persistentMarkersGroup.getBounds(), { padding: [40, 40] });
+        }
+      }, 300);
     }
 
     function restartAll() {
       currentIdx = 0;
       score = 0;
+      persistentMarkersGroup.clearLayers();
+      if (tempTestMarker) {
+        mapInstance.removeLayer(tempTestMarker);
+        tempTestMarker = null;
+      }
       document.getElementById('scoreVal').innerText = '0';
       document.getElementById('completionScreen').classList.add('hidden');
       document.getElementById('quizCard').classList.remove('hidden');

@@ -42,7 +42,7 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      20 alvos pelo globo: teste quadrantes e eixos para localizar monumentos e paisagens naturais.
+      20 alvos pelo globo: encontre a combinação correta de eixos e quadrantes para revelar o local.
     </p>
   </header>
 
@@ -132,14 +132,14 @@
       <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-1">
         <div>
           <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
-            Identificou o local no mapa? Digite o nome do monumento ou atrativo natural:
+            Reconheceu o ponto no mapa? Digite o nome do monumento ou atrativo:
           </label>
           <input 
             type="text" 
             id="monumentInput" 
             required 
             autocomplete="off"
-            placeholder="Ex: Monte Fuji, Cataratas do Iguaçu, Coliseu..." 
+            placeholder="Ex: Monte Fuji, Coliseu, Cataratas do Iguaçu..." 
             class="w-full px-3 py-2 bg-slate-950 border border-slate-600 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:outline-none"
           />
         </div>
@@ -201,7 +201,6 @@
   </footer>
 
   <script>
-    // 20 Pontos: 5 em cada quadrante (NL, NO, SL, SO) | 10 Histórico-Culturais e 10 Naturais
     const database = [
       // --- QUADRANTE 1: NORTE / LESTE (N / L | + / +) ---
       {
@@ -245,7 +244,7 @@
         decA: 138.7275,
         decB: 35.3606,
         canonical: "Monte Fuji",
-        accepted: ["monte fuji", "fuji", "vulcão fuji", "fujisan"],
+        accepted: ["monte fuji", "fuji", "vulcao fuji", "vulcão fuji", "fujisan"],
         correctAxis: "BA",
         correctQuad: "NL",
         realLat: 35.3606,
@@ -627,20 +626,42 @@
         mapInstance.removeLayer(tempTestMarker);
       }
 
+      // Verifica se a combinação de eixos e quadrantes é exatamente a correta
+      const isCorrectCombination = (axis === p.correctAxis && quad === p.correctQuad);
+
       tempTestMarker = L.marker([finalLat, finalLon]).addTo(mapInstance);
       mapInstance.setView([finalLat, finalLon], 12);
 
       const hemLabelLat = finalLat >= 0 ? "Norte" : "Sul";
       const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
 
-      tempTestMarker.bindPopup(`
-        <div style="font-size: 12px; font-family: sans-serif;">
-          <b>Ponto em Teste</b><br>
-          Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
-          Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
-          <span style="color: #64748b; font-size: 11px;">Analise a paisagem ou feição em redor.</span>
-        </div>
-      `).openPopup();
+      if (isCorrectCombination) {
+        // Revela o nome em português no balão quando o aluno acerta os quadrantes
+        tempTestMarker.bindPopup(`
+          <div style="font-size: 12px; font-family: sans-serif; min-width: 180px;">
+            <div style="color: #0284c7; font-weight: bold; font-size: 11px; text-transform: uppercase;">
+              <i class="fa-solid fa-location-dot"></i> Alvo Encontrado!
+            </div>
+            <b style="color: #0f172a; font-size: 14px; display: block; margin-top: 2px;">
+              ${p.canonical}
+            </b>
+            <span style="color: #64748b; font-size: 11px;">(${p.category})</span>
+            <div style="color: #334155; margin-top: 5px; font-size: 11px; border-top: 1px solid #e2e8f0; pt: 3px;">
+              <b>Coordenadas:</b><br>${p.realText}
+            </div>
+          </div>
+        `).openPopup();
+      } else {
+        // Combinação errada: exibe apenas como ponto de teste sem revelar o alvo
+        tempTestMarker.bindPopup(`
+          <div style="font-size: 12px; font-family: sans-serif;">
+            <b style="color: #dc2626;">Ponto em Teste (Incorreto)</b><br>
+            Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
+            Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
+            <span style="color: #64748b; font-size: 11px;">Este ponto não corresponde à feição procurada. Teste outros quadrantes ou inverta os eixos.</span>
+          </div>
+        `).openPopup();
+      }
     }
 
     function normalizeText(txt) {
@@ -666,7 +687,7 @@
       fb.classList.remove('hidden');
 
       if (isMatch) {
-        score += 5; // 20 pontos valendo 5 pontos cada = 100 pontos totais
+        score += 5;
         document.getElementById('scoreVal').innerText = score;
 
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
@@ -710,9 +731,9 @@
         fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-rose-950/80 border-rose-500/50 text-rose-300';
         fb.innerHTML = `
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-xmark"></i> Nome não identificado ou incorreto!
+            <i class="fa-solid fa-circle-xmark"></i> Nome incorreto!
           </div>
-          <div>Alterne os quadrantes ou inverta os eixos e clique em <em>"Testar e Plotar no Mapa"</em> para verificar o alvo.</div>
+          <div>Ajuste os quadrantes ou eixos e clique em <em>"Testar e Plotar no Mapa"</em> até o marcador revelar o local correto.</div>
         `;
       }
     }

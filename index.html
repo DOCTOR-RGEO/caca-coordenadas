@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -34,11 +33,11 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 font-sans">
 
-  <!-- Cabeçalho Atualizado -->
+  <!-- Cabeçalho -->
   <header class="w-full max-w-2xl text-center my-2">
-    <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-sky-950/80 border border-sky-500/50 rounded-full text-sky-300 text-xs sm:text-sm font-medium mb-2 shadow-sm">
-      <i class="fa-solid fa-compass text-sky-400"></i>
-      <span>Elaboração Prof. Dr. Ronaldo Missura &mdash; Laboratório de Representação da Terra &mdash; Departamento de Geografia da UFS</span>
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-sky-950/80 border border-sky-500/50 rounded-full text-sky-300 text-xs sm:text-sm font-medium mb-2 shadow-sm text-left sm:text-center">
+      <i class="fa-solid fa-compass text-sky-400 shrink-0"></i>
+      <span>Elaboração Prof. Dr. Ronaldo Missura &mdash; Laboratório de Representação da Terra &mdash; DGE / UFS</span>
     </div>
     <h1 class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300">
       Caçadores de Coordenadas
@@ -90,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Simulador de Ajuste Cartográfico -->
+      <!-- Painel de Orientação e Plotagem -->
       <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 sm:p-4 space-y-3">
         <div class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
           <i class="fa-solid fa-earth-americas text-sky-400"></i> Painel de Orientação e Plotagem:
@@ -149,7 +148,7 @@
             id="monumentInput" 
             required 
             autocomplete="off"
-            placeholder="Ex: Monte Fuji, Cataratas do Iguaçu, Coliseu..." 
+            placeholder="Ex: Torre Eiffel, Cataratas do Iguaçu, Coliseu..." 
             class="w-full px-3 py-2 bg-slate-950 border border-slate-600 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:outline-none"
           />
         </div>
@@ -206,15 +205,16 @@
 
   </main>
 
-  <!-- Rodapé Atualizado -->
+  <!-- Rodapé -->
   <footer class="w-full max-w-2xl text-center my-3 text-[11px] text-slate-400 space-y-1">
     <div>Atividade prática de Cartografia e Sistemas de Coordenadas Geográficas.</div>
     <div class="text-slate-500">Laboratório de Representação da Terra &bull; DGE / UFS</div>
   </footer>
 
   <script>
+    // 20 Pontos organizados em ciclo estrito de quadrantes: NL -> NO -> SO -> SL
     const database = [
-      // --- QUADRANTE 1: NORTE / LESTE (N / L | + / +) ---
+      // 1. NL - Cultural
       {
         id: 1,
         type: "GMS",
@@ -239,106 +239,9 @@
           "<strong>Geografia Física:</strong> Devido à dilatação térmica do ferro pudelado, a torre pode variar até 15 cm de altura entre o verão e o inverno."
         ]
       },
+      // 2. NO - Cultural
       {
         id: 2,
-        type: "GMS",
-        category: "Histórico / Cultural",
-        valA: "41° 53' 25''",
-        valB: "12° 29' 32''",
-        decA: 41.8902,
-        decB: 12.4922,
-        canonical: "Coliseu",
-        accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum"],
-        correctAxis: "AB",
-        correctQuad: "NL",
-        realLat: 41.8902,
-        realLon: 12.4922,
-        altitude: "22 m (nível da planície aluvial)",
-        coordGMS: "41° 53' 25'' N, 12° 29' 32'' L",
-        coordGD: "+41.8902, +12.4922",
-        cityCountry: "Roma, Itália",
-        curiosities: [
-          "<strong>Visitação:</strong> Mais de 7,5 milhões de turistas por ano.",
-          "<strong>Melhor época:</strong> Abril a maio e outubro (evitando o calor extremo do verão mediterrâneo).",
-          "<strong>Geologia Urbana:</strong> Foi erguido no vale sedimentar drenado entre as colinas de Esquilino, Palatino e Célio, sobre o antigo lago artificial da Domus Aurea de Nero."
-        ]
-      },
-      {
-        id: 3,
-        type: "GMS",
-        category: "Natural",
-        valA: "138° 43' 39''",
-        valB: "35° 21' 38''",
-        decA: 138.7275,
-        decB: 35.3606,
-        canonical: "Monte Fuji",
-        accepted: ["monte fuji", "fuji", "vulcao fuji", "vulcão fuji", "fujisan"],
-        correctAxis: "BA",
-        correctQuad: "NL",
-        realLat: 35.3606,
-        realLon: 138.7275,
-        altitude: "3.776 m (ponto culminante do Japão)",
-        coordGMS: "35° 21' 38'' N, 138° 43' 39'' L",
-        coordGD: "+35.3606, +138.7275",
-        cityCountry: "Ilha de Honshu, Japão",
-        curiosities: [
-          "<strong>Última Erupção:</strong> Erupção Hoei, ocorrida em 16 de dezembro de 1707 (cinzas cobriram Tóquio a 100 km de distância).",
-          "<strong>Temporada de Escalada:</strong> Oficialmente de início de julho a início de setembro.",
-          "<strong>Tectônica:</strong> É um estratovulcão ativo situado na junção tripla entre as placas Tectônica Euroasiática, do Pacífico e das Filipinas."
-        ]
-      },
-      {
-        id: 4,
-        type: "GD",
-        category: "Natural",
-        valA: "86.9250",
-        valB: "27.9881",
-        decA: 86.9250,
-        decB: 27.9881,
-        canonical: "Monte Everest",
-        accepted: ["monte everest", "everest", "pico everest", "sagarmatha"],
-        correctAxis: "BA",
-        correctQuad: "NL",
-        realLat: 27.9881,
-        realLon: 86.9250,
-        altitude: "8.848,86 m",
-        coordGMS: "27° 59' 17'' N, 86° 55' 30'' L",
-        coordGD: "+27.9881, +86.9250",
-        cityCountry: "Cordilheira do Himalaia (Nepal / China)",
-        curiosities: [
-          "<strong>Orogênese:</strong> A montanha continua crescendo cerca de 4 mm ao ano devido à colisão contínua entre a Placa Indiana e a Placa Euroasiática.",
-          "<strong>Melhor época:</strong> Abril e maio (janela pré-monção com ventos menos severos).",
-          "<strong>Paleogeografia:</strong> O cume é composto por calcário marinho com fósseis de trilobitas do período Ordoviciano, evidenciando o antigo Mar de Tétis."
-        ]
-      },
-      {
-        id: 5,
-        type: "GD",
-        category: "Natural",
-        valA: "35.5000",
-        valB: "31.5000",
-        decA: 35.5000,
-        decB: 31.5000,
-        canonical: "Mar Morto",
-        accepted: ["mar morto", "dead sea"],
-        correctAxis: "BA",
-        correctQuad: "NL",
-        realLat: 31.5000,
-        realLon: 35.5000,
-        altitude: "-435 m (depressão absoluta mais profunda em terra firme)",
-        coordGMS: "31° 30' 00'' N, 35° 30' 00'' L",
-        coordGD: "+31.5000, +35.5000",
-        cityCountry: "Vale do Rifte Jordano (Jordânia / Israel)",
-        curiosities: [
-          "<strong>Balanço Hídrico:</strong> Seu nível cai mais de 1 metro por ano; perdeu mais de 30% da sua superfície original nas últimas cinco décadas devido ao desvio das águas do Rio Jordão.",
-          "<strong>Salinidade:</strong> Cerca de 34% de sais dissolvidos (quase 10 vezes mais denso que a água oceânica comum).",
-          "<strong>Melhor época:</strong> Novembro a março, evitando as temperaturas que superam 45°C no verão árido."
-        ]
-      },
-
-      // --- QUADRANTE 2: NORTE / OESTE (N / O | + / -) ---
-      {
-        id: 6,
         type: "GMS",
         category: "Histórico / Cultural",
         valA: "40° 41' 21''",
@@ -361,106 +264,9 @@
           "<strong>Geomorfologia Costeira:</strong> Localizada no estuário do Rio Hudson, sofre a influência direta das marés da Baía Superior de Nova York."
         ]
       },
+      // 3. SO - Cultural
       {
-        id: 7,
-        type: "GMS",
-        category: "Histórico / Cultural",
-        valA: "00° 07' 28''",
-        valB: "51° 30' 03''",
-        decA: 0.1245,
-        decB: 51.5008,
-        canonical: "Big Ben / Elizabeth Tower",
-        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
-        correctAxis: "BA",
-        correctQuad: "NO",
-        realLat: 51.5008,
-        realLon: -0.1245,
-        altitude: "6 m (várzea do Tâmisa) / 96 m (torre)",
-        coordGMS: "51° 30' 03'' N, 00° 07' 28'' O",
-        coordGD: "+51.5008, -0.1245",
-        cityCountry: "Londres, Reino Unido",
-        curiosities: [
-          "<strong>Referencial Cartográfico:</strong> Fica a apenas 9,5 km a oeste do Meridiano de Greenwich (marco 0° de longitude).",
-          "<strong>Melhor época:</strong> Junho a agosto (verão com dias mais longos no clima oceânico temperado).",
-          "<strong>Geotecnia:</strong> O relógio inclina-se ligeiramente cerca de 0,26 graus a noroeste devido às oscilações nos sedimentos de argila londrina ao longo de 160 anos."
-        ]
-      },
-      {
-        id: 8,
-        type: "GMS",
-        category: "Histórico / Cultural",
-        valA: "88° 34' 04''",
-        valB: "20° 41' 01''",
-        decA: 88.5678,
-        decB: 20.6836,
-        canonical: "Chichén Itzá",
-        accepted: ["chichen itza", "chichen-itza", "chichén itzá", "piramide maia"],
-        correctAxis: "BA",
-        correctQuad: "NO",
-        realLat: 20.6836,
-        realLon: -88.5678,
-        altitude: "25 m (plataforma cárstica)",
-        coordGMS: "20° 41' 01'' N, 88° 34' 04'' O",
-        coordGD: "+20.6836, -88.5678",
-        cityCountry: "Península de Iucatã, México",
-        curiosities: [
-          "<strong>Hidrologia Cárstica:</strong> A cidade dependia exclusivamente de cenotes (dolinhas de colapso que expõem o aquífero subterrâneo em rochas calcárias).",
-          "<strong>Arqueoastronomia:</strong> Nos equinócios de primavera e outono, a luz solar cria a ilusão da serpente Kukulkán descendo as escadas da pirâmide.",
-          "<strong>Melhor época:</strong> Novembro a março (estação seca, com menor probabilidade de tempestades tropicais)."
-        ]
-      },
-      {
-        id: 9,
-        type: "GD",
-        category: "Natural",
-        valA: "36.0544",
-        valB: "112.1401",
-        decA: 36.0544,
-        decB: 112.1401,
-        canonical: "Grand Canyon",
-        accepted: ["grand canyon", "grande canyon", "canyon do colorado"],
-        correctAxis: "AB",
-        correctQuad: "NO",
-        realLat: 36.0544,
-        realLon: -112.1401,
-        altitude: "2.134 m (borda sul) / 750 m (leito do rio)",
-        coordGMS: "36° 03' 16'' N, 112° 08' 24'' O",
-        coordGD: "+36.0544, -112.1401",
-        cityCountry: "Arizona, Estados Unidos",
-        curiosities: [
-          "<strong>Dimensões Geomorfológicas:</strong> Tem 446 km de extensão e gargantas que atingem até 1.800 metros de profundidade, escavadas pelo Rio Colorado.",
-          "<strong>Tempo Geológico:</strong> As rochas do embasamento no fundo da garganta (Xisto de Vishnu) datam de aproximadamente 1,8 bilhão de anos.",
-          "<strong>Melhor época:</strong> Março a maio e setembro a novembro (evitando as nevascas na borda norte e o calor no fundo do cânion)."
-        ]
-      },
-      {
-        id: 10,
-        type: "GD",
-        category: "Natural",
-        valA: "43.0828",
-        valB: "79.0742",
-        decA: 43.0828,
-        decB: 79.0742,
-        canonical: "Cataratas do Niágara",
-        accepted: ["cataratas do niagara", "cataratas do niágara", "niagara falls"],
-        correctAxis: "AB",
-        correctQuad: "NO",
-        realLat: 43.0828,
-        realLon: -79.0742,
-        altitude: "155 m (nível superior) / queda de 51 m",
-        coordGMS: "43° 04' 58'' N, 79° 04' 27'' O",
-        coordGD: "+43.0828, -79.0742",
-        cityCountry: "Fronteira EUA / Canadá",
-        curiosities: [
-          "<strong>Vazão Hídrica:</strong> A vazão combinada ultrapassa 2.800 m³/s, correspondendo à maior drenagem fluvial entre os Grandes Lagos (Lago Erie para o Lago Ontário).",
-          "<strong>Erosão Regressiva:</strong> A escarpa recuou cerca de 11 km nos últimos 12.000 anos pela ação das águas pós-glaciais.",
-          "<strong>Melhor época:</strong> Junho a agosto (temperaturas amenas com todas as atrações fluviais operando)."
-        ]
-      },
-
-      // --- QUADRANTE 3: SUL / OESTE (S / O | - / -) ---
-      {
-        id: 11,
+        id: 3,
         type: "GMS",
         category: "Histórico / Cultural",
         valA: "13° 09' 47''",
@@ -483,106 +289,9 @@
           "<strong>Melhor época:</strong> Maio a setembro (estação seca na serra peruana)."
         ]
       },
+      // 4. SL - Cultural
       {
-        id: 12,
-        type: "GMS",
-        category: "Histórico / Cultural",
-        valA: "109° 20' 52''",
-        valB: "27° 06' 43''",
-        decA: 109.3478,
-        decB: 27.1119,
-        canonical: "Moais da Ilha de Páscoa (Rapa Nui)",
-        accepted: ["ilha de pascoa", "ilha de páscoa", "moais", "rapa nui", "moai"],
-        correctAxis: "BA",
-        correctQuad: "SO",
-        realLat: -27.1119,
-        realLon: -109.3478,
-        altitude: "100 m a 507 m (Vulcão Terevaka)",
-        coordGMS: "27° 06' 43'' S, 109° 20' 52'' O",
-        coordGD: "-27.1119, -109.3478",
-        cityCountry: "Território Especial de Rapa Nui, Chile",
-        curiosities: [
-          "<strong>Extremo Isolamento Geográfico:</strong> Dista 3.512 km da costa continental do Chile e 2.075 km da Ilha Pitcairn (seu vizinho habitado mais próximo).",
-          "<strong>Litologia dos Moais:</strong> As quase 900 estátuas foram esculpidas em tufo vulcânico compacto na cratera do vulcão extinto Rano Raraku.",
-          "<strong>Melhor época:</strong> Outubro a abril (verão no Pacífico Sul, com ventos oceânicos menos intensos)."
-        ]
-      },
-      {
-        id: 13,
-        type: "GD",
-        category: "Histórico / Cultural",
-        valA: "43.2105",
-        valB: "22.9519",
-        decA: 43.2105,
-        decB: 22.9519,
-        canonical: "Cristo Redentor",
-        accepted: ["cristo redentor", "cristo", "corcovado"],
-        correctAxis: "BA",
-        correctQuad: "SO",
-        realLat: -22.9519,
-        realLon: -43.2105,
-        altitude: "710 m (topo do Morro do Corcovado)",
-        coordGMS: "22° 57' 07'' S, 43° 12' 38'' O",
-        coordGD: "-22.9519, -43.2105",
-        cityCountry: "Rio de Janeiro, Brasil",
-        curiosities: [
-          "<strong>Geologia dos Inselbergs:</strong> O Corcovado é um maciço gnáissico-granítico pré-cambriano inserido no bioma Mata Atlântica do Parque Nacional da Tijuca.",
-          "<strong>Visitação:</strong> Média de 1,9 a 2,2 milhões de turistas por ano.",
-          "<strong>Melhor época:</strong> Maio a setembro (inverno carioca: menor pluviosidade e ar mais límpido, evitando nuvens baixas no topo)."
-        ]
-      },
-      {
-        id: 14,
-        type: "GD",
-        category: "Natural",
-        valA: "25.6953",
-        valB: "54.4367",
-        decA: 25.6953,
-        decB: 54.4367,
-        canonical: "Cataratas do Iguaçu",
-        accepted: ["cataratas do iguacu", "cataratas do iguaçu", "iguazu", "cataratas de iguazu"],
-        correctAxis: "AB",
-        correctQuad: "SO",
-        realLat: -25.6953,
-        realLon: -54.4367,
-        altitude: "160 m a 195 m",
-        coordGMS: "25° 41' 43'' S, 54° 26' 12'' O",
-        coordGD: "-25.6953, -54.4367",
-        cityCountry: "Foz do Iguaçu (Brasil) / Puerto Iguazú (Argentina)",
-        curiosities: [
-          "<strong>Recorde de Vazão:</strong> Em outubro de 2023, atingiu a marca histórica de 24,2 milhões de litros por segundo (16 vezes a média usual de 1.500 m³/s).",
-          "<strong>Geologia Estrutural:</strong> As 275 quedas saltam sobre derrames basálticos da Formação Serra Geral (Bacia do Paraná), datados do Cretáceo.",
-          "<strong>Melhor época:</strong> Março a maio (temperaturas equilibradas) ou dezembro/fevereiro para observar a vazão em nível máximo."
-        ]
-      },
-      {
-        id: 15,
-        type: "GD",
-        category: "Natural",
-        valA: "50.5794",
-        valB: "73.0475",
-        decA: 50.5794,
-        decB: 73.0475,
-        canonical: "Geleira Perito Moreno",
-        accepted: ["perito moreno", "geleira perito moreno", "glaciar perito moreno"],
-        correctAxis: "AB",
-        correctQuad: "SO",
-        realLat: -50.5794,
-        realLon: -73.0475,
-        altitude: "185 m (nível do Lago Argentino) / parede de 60-70 m",
-        coordGMS: "50° 34' 46'' S, 73° 02' 51'' O",
-        coordGD: "-50.5794, -73.0475",
-        cityCountry: "Parque Nacional Los Glaciares, Santa Cruz, Argentina",
-        curiosities: [
-          "<strong>Dinâmica Glaciológica:</strong> É uma das poucas geleiras do planeta em equilíbrio relativo de massa; sua frente avança até represar o Braço Rico do Lago Argentino, gerando rompimentos cíclicos.",
-          "<strong>Área e Espessura:</strong> Possui 250 km² de extensão e profundidade de gelo que ultrapassa 700 metros em alguns trechos.",
-          "<strong>Melhor época:</strong> Novembro a março (verão austral patagônico com temperaturas entre 10°C e 18°C)."
-        ]
-      },
-
-      // --- QUADRANTE 4: SUL / LESTE (S / L | - / +) ---
-      {
-        id: 16,
+        id: 4,
         type: "GMS",
         category: "Histórico / Cultural",
         valA: "110° 12' 14''",
@@ -605,8 +314,84 @@
           "<strong>Melhor época:</strong> Junho a setembro (estação seca no clima tropical de monção)."
         ]
       },
+      // 5. NL - Cultural
       {
-        id: 17,
+        id: 5,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "41° 53' 25''",
+        valB: "12° 29' 32''",
+        decA: 41.8902,
+        decB: 12.4922,
+        canonical: "Coliseu",
+        accepted: ["coliseu", "coliseu de roma", "colosseo", "colosseum"],
+        correctAxis: "AB",
+        correctQuad: "NL",
+        realLat: 41.8902,
+        realLon: 12.4922,
+        altitude: "22 m (nível da planície aluvial)",
+        coordGMS: "41° 53' 25'' N, 12° 29' 32'' L",
+        coordGD: "+41.8902, +12.4922",
+        cityCountry: "Roma, Itália",
+        curiosities: [
+          "<strong>Visitação:</strong> Mais de 7,5 milhões de turistas por ano.",
+          "<strong>Melhor época:</strong> Abril a maio e outubro (evitando o calor extremo do verão mediterrâneo).",
+          "<strong>Geologia Urbana:</strong> Foi erguido no vale sedimentar drenado entre as colinas de Esquilino, Palatino e Célio, sobre o antigo lago artificial da Domus Aurea de Nero."
+        ]
+      },
+      // 6. NO - Cultural
+      {
+        id: 6,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "00° 07' 28''",
+        valB: "51° 30' 03''",
+        decA: 0.1245,
+        decB: 51.5008,
+        canonical: "Big Ben / Elizabeth Tower",
+        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
+        correctAxis: "BA",
+        correctQuad: "NO",
+        realLat: 51.5008,
+        realLon: -0.1245,
+        altitude: "6 m (várzea do Tâmisa) / 96 m (torre)",
+        coordGMS: "51° 30' 03'' N, 00° 07' 28'' O",
+        coordGD: "+51.5008, -0.1245",
+        cityCountry: "Londres, Reino Unido",
+        curiosities: [
+          "<strong>Referencial Cartográfico:</strong> Fica a apenas 9,5 km a oeste do Meridiano de Greenwich (marco 0° de longitude).",
+          "<strong>Melhor época:</strong> Junho a agosto (verão com dias mais longos no clima oceânico temperado).",
+          "<strong>Geotecnia:</strong> O relógio inclina-se ligeiramente cerca de 0,26 graus a noroeste devido às oscilações nos sedimentos de argila londrina ao longo de 160 anos."
+        ]
+      },
+      // 7. SO - Cultural
+      {
+        id: 7,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "109° 20' 52''",
+        valB: "27° 06' 43''",
+        decA: 109.3478,
+        decB: 27.1119,
+        canonical: "Moais da Ilha de Páscoa (Rapa Nui)",
+        accepted: ["ilha de pascoa", "ilha de páscoa", "moais", "rapa nui", "moai"],
+        correctAxis: "BA",
+        correctQuad: "SO",
+        realLat: -27.1119,
+        realLon: -109.3478,
+        altitude: "100 m a 507 m (Vulcão Terevaka)",
+        coordGMS: "27° 06' 43'' S, 109° 20' 52'' O",
+        coordGD: "-27.1119, -109.3478",
+        cityCountry: "Território Especial de Rapa Nui, Chile",
+        curiosities: [
+          "<strong>Extremo Isolamento Geográfico:</strong> Dista 3.512 km da costa continental do Chile e 2.075 km da Ilha Pitcairn (seu vizinho habitado mais próximo).",
+          "<strong>Litologia dos Moais:</strong> As quase 900 estátuas foram esculpidas em tufo vulcânico compacto na cratera do vulcão extinto Rano Raraku.",
+          "<strong>Melhor época:</strong> Outubro a abril (verão no Pacífico Sul, com ventos oceânicos menos intensos)."
+        ]
+      },
+      // 8. SL - Natural
+      {
+        id: 8,
         type: "GMS",
         category: "Natural",
         valA: "17° 55' 28''",
@@ -629,8 +414,84 @@
           "<strong>Melhor época:</strong> Fevereiro a maio (pico do fluxo de cheia após as chuvas da bacia hidrográfica)."
         ]
       },
+      // 9. NL - Natural
       {
-        id: 18,
+        id: 9,
+        type: "GMS",
+        category: "Natural",
+        valA: "138° 43' 39''",
+        valB: "35° 21' 38''",
+        decA: 138.7275,
+        decB: 35.3606,
+        canonical: "Monte Fuji",
+        accepted: ["monte fuji", "fuji", "vulcao fuji", "vulcão fuji", "fujisan"],
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 35.3606,
+        realLon: 138.7275,
+        altitude: "3.776 m (ponto culminante do Japão)",
+        coordGMS: "35° 21' 38'' N, 138° 43' 39'' L",
+        coordGD: "+35.3606, +138.7275",
+        cityCountry: "Ilha de Honshu, Japão",
+        curiosities: [
+          "<strong>Última Erupção:</strong> Erupção Hoei, ocorrida em 16 de dezembro de 1707 (cinzas cobriram Tóquio a 100 km de distância).",
+          "<strong>Temporada de Escalada:</strong> Oficialmente de início de julho a início de setembro.",
+          "<strong>Tectônica:</strong> É um estratovulcão ativo situado na junção tripla entre as placas Tectônica Euroasiática, do Pacífico e das Filipinas."
+        ]
+      },
+      // 10. NO - Cultural
+      {
+        id: 10,
+        type: "GMS",
+        category: "Histórico / Cultural",
+        valA: "88° 34' 04''",
+        valB: "20° 41' 01''",
+        decA: 88.5678,
+        decB: 20.6836,
+        canonical: "Chichén Itzá",
+        accepted: ["chichen itza", "chichen-itza", "chichén itzá", "piramide maia"],
+        correctAxis: "BA",
+        correctQuad: "NO",
+        realLat: 20.6836,
+        realLon: -88.5678,
+        altitude: "25 m (plataforma cárstica)",
+        coordGMS: "20° 41' 01'' N, 88° 34' 04'' O",
+        coordGD: "+20.6836, -88.5678",
+        cityCountry: "Península de Iucatã, México",
+        curiosities: [
+          "<strong>Hidrologia Cárstica:</strong> A cidade dependia exclusivamente de cenotes (dolinhas de colapso que expõem o aquífero subterrâneo em rochas calcárias).",
+          "<strong>Arqueoastronomia:</strong> Nos equinócios de primavera e outono, a luz solar cria a ilusão da serpente Kukulkán descendo as escadas da pirâmide.",
+          "<strong>Melhor época:</strong> Novembro a março (estação seca, com menor probabilidade de tempestades tropicais)."
+        ]
+      },
+      // 11. SO - Cultural
+      {
+        id: 11,
+        type: "GD",
+        category: "Histórico / Cultural",
+        valA: "43.2105",
+        valB: "22.9519",
+        decA: 43.2105,
+        decB: 22.9519,
+        canonical: "Cristo Redentor",
+        accepted: ["cristo redentor", "cristo", "corcovado"],
+        correctAxis: "BA",
+        correctQuad: "SO",
+        realLat: -22.9519,
+        realLon: -43.2105,
+        altitude: "710 m (topo do Morro do Corcovado)",
+        coordGMS: "22° 57' 07'' S, 43° 12' 38'' O",
+        coordGD: "-22.9519, -43.2105",
+        cityCountry: "Rio de Janeiro, Brasil",
+        curiosities: [
+          "<strong>Geologia dos Inselbergs:</strong> O Corcovado é um maciço gnáissico-granítico pré-cambriano inserido no bioma Mata Atlântica do Parque Nacional da Tijuca.",
+          "<strong>Visitação:</strong> Média de 1,9 a 2,2 milhões de turistas por ano.",
+          "<strong>Melhor época:</strong> Maio a setembro (inverno carioca: menor pluviosidade e ar mais límpido, evitando nuvens baixas no topo)."
+        ]
+      },
+      // 12. SL - Cultural
+      {
+        id: 12,
         type: "GD",
         category: "Histórico / Cultural",
         valA: "151.2153",
@@ -653,8 +514,84 @@
           "<strong>Melhor época:</strong> Setembro a novembro e março a maio (clima ameno com baixa incidência de tempestades)."
         ]
       },
+      // 13. NL - Natural
       {
-        id: 19,
+        id: 13,
+        type: "GD",
+        category: "Natural",
+        valA: "86.9250",
+        valB: "27.9881",
+        decA: 86.9250,
+        decB: 27.9881,
+        canonical: "Monte Everest",
+        accepted: ["monte everest", "everest", "pico everest", "sagarmatha"],
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 27.9881,
+        realLon: 86.9250,
+        altitude: "8.848,86 m",
+        coordGMS: "27° 59' 17'' N, 86° 55' 30'' L",
+        coordGD: "+27.9881, +86.9250",
+        cityCountry: "Cordilheira do Himalaia (Nepal / China)",
+        curiosities: [
+          "<strong>Orogênese:</strong> A montanha continua crescendo cerca de 4 mm ao ano devido à colisão contínua entre a Placa Indiana e a Placa Euroasiática.",
+          "<strong>Melhor época:</strong> Abril e maio (janela pré-monção com ventos menos severos).",
+          "<strong>Paleogeografia:</strong> O cume é composto por calcário marinho com fósseis de trilobitas do período Ordoviciano, evidenciando o antigo Mar de Tétis."
+        ]
+      },
+      // 14. NO - Natural
+      {
+        id: 14,
+        type: "GD",
+        category: "Natural",
+        valA: "36.0544",
+        valB: "112.1401",
+        decA: 36.0544,
+        decB: 112.1401,
+        canonical: "Grand Canyon",
+        accepted: ["grand canyon", "grande canyon", "canyon do colorado"],
+        correctAxis: "AB",
+        correctQuad: "NO",
+        realLat: 36.0544,
+        realLon: -112.1401,
+        altitude: "2.134 m (borda sul) / 750 m (leito do rio)",
+        coordGMS: "36° 03' 16'' N, 112° 08' 24'' O",
+        coordGD: "+36.0544, -112.1401",
+        cityCountry: "Arizona, Estados Unidos",
+        curiosities: [
+          "<strong>Dimensões Geomorfológicas:</strong> Tem 446 km de extensão e gargantas que atingem até 1.800 metros de profundidade, escavadas pelo Rio Colorado.",
+          "<strong>Tempo Geológico:</strong> As rochas do embasamento no fundo da garganta (Xisto de Vishnu) datam de aproximadamente 1,8 bilhão de anos.",
+          "<strong>Melhor época:</strong> Março a maio e setembro a novembro (evitando as nevascas na borda norte e o calor no fundo do cânion)."
+        ]
+      },
+      // 15. SO - Natural
+      {
+        id: 15,
+        type: "GD",
+        category: "Natural",
+        valA: "25.6953",
+        valB: "54.4367",
+        decA: 25.6953,
+        decB: 54.4367,
+        canonical: "Cataratas do Iguaçu",
+        accepted: ["cataratas do iguacu", "cataratas do iguaçu", "iguazu", "cataratas de iguazu"],
+        correctAxis: "AB",
+        correctQuad: "SO",
+        realLat: -25.6953,
+        realLon: -54.4367,
+        altitude: "160 m a 195 m",
+        coordGMS: "25° 41' 43'' S, 54° 26' 12'' O",
+        coordGD: "-25.6953, -54.4367",
+        cityCountry: "Foz do Iguaçu (Brasil) / Puerto Iguazú (Argentina)",
+        curiosities: [
+          "<strong>Recorde de Vazão:</strong> Em outubro de 2023, atingiu a marca histórica de 24,2 milhões de litros por segundo (16 vezes a média usual de 1.500 m³/s).",
+          "<strong>Geologia Estrutural:</strong> As 275 quedas saltam sobre derrames basálticos da Formação Serra Geral (Bacia do Paraná), datados do Cretáceo.",
+          "<strong>Melhor época:</strong> Março a maio (temperaturas equilibradas) ou dezembro/fevereiro para observar a vazão em nível máximo."
+        ]
+      },
+      // 16. SL - Natural
+      {
+        id: 16,
         type: "GD",
         category: "Natural",
         valA: "25.3444",
@@ -677,6 +614,82 @@
           "<strong>Melhor época:</strong> Maio a setembro (inverno árido, quando as temperaturas diurnas ficam em torno de 20°C a 25°C)."
         ]
       },
+      // 17. NL - Natural
+      {
+        id: 17,
+        type: "GD",
+        category: "Natural",
+        valA: "35.5000",
+        valB: "31.5000",
+        decA: 35.5000,
+        decB: 31.5000,
+        canonical: "Mar Morto",
+        accepted: ["mar morto", "dead sea"],
+        correctAxis: "BA",
+        correctQuad: "NL",
+        realLat: 31.5000,
+        realLon: 35.5000,
+        altitude: "-435 m (depressão absoluta mais profunda em terra firme)",
+        coordGMS: "31° 30' 00'' N, 35° 30' 00'' L",
+        coordGD: "+31.5000, +35.5000",
+        cityCountry: "Vale do Rifte Jordano (Jordânia / Israel)",
+        curiosities: [
+          "<strong>Balanço Hídrico:</strong> Seu nível cai mais de 1 metro por ano; perdeu mais de 30% da sua superfície original nas últimas cinco décadas devido ao desvio das águas do Rio Jordão.",
+          "<strong>Salinidade:</strong> Cerca de 34% de sais dissolvidos (quase 10 vezes mais denso que a água oceânica comum).",
+          "<strong>Melhor época:</strong> Novembro a março, evitando as temperaturas que superam 45°C no verão árido."
+        ]
+      },
+      // 18. NO - Natural
+      {
+        id: 18,
+        type: "GD",
+        category: "Natural",
+        valA: "43.0828",
+        valB: "79.0742",
+        decA: 43.0828,
+        decB: 79.0742,
+        canonical: "Cataratas do Niágara",
+        accepted: ["cataratas do niagara", "cataratas do niágara", "niagara falls"],
+        correctAxis: "AB",
+        correctQuad: "NO",
+        realLat: 43.0828,
+        realLon: -79.0742,
+        altitude: "155 m (nível superior) / queda de 51 m",
+        coordGMS: "43° 04' 58'' N, 79° 04' 27'' O",
+        coordGD: "+43.0828, -79.0742",
+        cityCountry: "Fronteira EUA / Canadá",
+        curiosities: [
+          "<strong>Vazão Hídrica:</strong> A vazão combinada ultrapassa 2.800 m³/s, correspondendo à maior drenagem fluvial entre os Grandes Lagos (Lago Erie para o Lago Ontário).",
+          "<strong>Erosão Regressiva:</strong> A escarpa recuou cerca de 11 km nos últimos 12.000 anos pela ação das águas pós-glaciais.",
+          "<strong>Melhor época:</strong> Junho a agosto (temperaturas amenas com todas as atrações fluviais operando)."
+        ]
+      },
+      // 19. SO - Natural
+      {
+        id: 19,
+        type: "GD",
+        category: "Natural",
+        valA: "50.5794",
+        valB: "73.0475",
+        decA: 50.5794,
+        decB: 73.0475,
+        canonical: "Geleira Perito Moreno",
+        accepted: ["perito moreno", "geleira perito moreno", "glaciar perito moreno"],
+        correctAxis: "AB",
+        correctQuad: "SO",
+        realLat: -50.5794,
+        realLon: -73.0475,
+        altitude: "185 m (nível do Lago Argentino) / parede de 60-70 m",
+        coordGMS: "50° 34' 46'' S, 73° 02' 51'' O",
+        coordGD: "-50.5794, -73.0475",
+        cityCountry: "Parque Nacional Los Glaciares, Santa Cruz, Argentina",
+        curiosities: [
+          "<strong>Dinâmica Glaciológica:</strong> É uma das poucas geleiras do planeta em equilíbrio relativo de massa; sua frente avança até represar o Braço Rico do Lago Argentino, gerando rompimentos cíclicos.",
+          "<strong>Área e Espessura:</strong> Possui 250 km² de extensão e profundidade de gelo que ultrapassa 700 metros em alguns trechos.",
+          "<strong>Melhor época:</strong> Novembro a março (verão austral patagônico com temperaturas entre 10°C e 18°C)."
+        ]
+      },
+      // 20. SL - Natural
       {
         id: 20,
         type: "GD",
@@ -1052,5 +1065,3 @@
   </script>
 </body>
 </html>
-
-```

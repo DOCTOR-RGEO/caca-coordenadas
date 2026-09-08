@@ -42,7 +42,7 @@
       Caçadores de Coordenadas
     </h1>
     <p class="text-slate-400 text-xs sm:text-sm mt-1">
-      20 alvos pelo globo: encontre a combinação correta de eixos e quadrantes para revelar o local.
+      Explore coordenadas, analise quadrantes globais e descubra dados geográficos dos alvos.
     </p>
   </header>
 
@@ -65,7 +65,7 @@
     <!-- Conteúdo do Desafio -->
     <div id="quizCard" class="space-y-4">
       
-      <!-- Dados Brutos -->
+      <!-- Dados Brutos Fornecidos -->
       <div class="bg-slate-950/80 border border-slate-700 rounded-xl p-3 text-center">
         <div class="flex items-center justify-between mb-2">
           <span id="formatBadge" class="text-[11px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded bg-slate-800 border border-slate-600 text-amber-400">
@@ -132,14 +132,14 @@
       <form id="guessForm" onsubmit="handleValidation(event)" class="space-y-3 pt-1">
         <div>
           <label for="monumentInput" class="block text-xs font-semibold text-slate-300 mb-1">
-            Reconheceu o ponto no mapa? Digite o nome do monumento ou atrativo:
+            Identificou o ponto no mapa? Digite o nome do monumento ou atrativo natural:
           </label>
           <input 
             type="text" 
             id="monumentInput" 
             required 
             autocomplete="off"
-            placeholder="Ex: Monte Fuji, Coliseu, Cataratas do Iguaçu..." 
+            placeholder="Ex: Monte Fuji, Cataratas do Iguaçu, Coliseu..." 
             class="w-full px-3 py-2 bg-slate-950 border border-slate-600 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:outline-none"
           />
         </div>
@@ -152,8 +152,8 @@
         </button>
       </form>
 
-      <!-- Feedback -->
-      <div id="resultFeedback" class="hidden p-3 rounded-lg text-xs leading-relaxed border"></div>
+      <!-- Feedback Detalhado com Informações Geográficas -->
+      <div id="resultFeedback" class="hidden p-4 rounded-xl text-xs leading-relaxed border space-y-2.5"></div>
 
       <!-- Próximo Card -->
       <button 
@@ -217,7 +217,15 @@
         correctQuad: "NL",
         realLat: 48.8583,
         realLon: 2.2944,
-        realText: "48° 51' 30'' N, 02° 17' 40'' L (Paris, França)"
+        altitude: "33 m (base) / 330 m (topo com antenas)",
+        coordGMS: "48° 51' 30'' N, 02° 17' 40'' L",
+        coordGD: "+48.8583, +2.2944",
+        cityCountry: "Paris, França",
+        curiosities: [
+          "<strong>Visitação:</strong> Recebe cerca de 6 a 7 milhões de visitantes ao ano.",
+          "<strong>Melhor época:</strong> Maio a setembro (primavera/verão europeu, com maior amplitude de luz solar).",
+          "<strong>Geografia Física:</strong> Devido à dilatação térmica do ferro pudelado, a torre pode variar até 15 cm de altura entre o verão e o inverno."
+        ]
       },
       {
         id: 2,
@@ -233,7 +241,15 @@
         correctQuad: "NL",
         realLat: 41.8902,
         realLon: 12.4922,
-        realText: "41° 53' 25'' N, 12° 29' 32'' L (Roma, Itália)"
+        altitude: "22 m (nível da planície aluvial)",
+        coordGMS: "41° 53' 25'' N, 12° 29' 32'' L",
+        coordGD: "+41.8902, +12.4922",
+        cityCountry: "Roma, Itália",
+        curiosities: [
+          "<strong>Visitação:</strong> Mais de 7,5 milhões de turistas por ano.",
+          "<strong>Melhor época:</strong> Abril a maio e outubro (evitando o calor extremo do verão mediterrâneo).",
+          "<strong>Geologia Urbana:</strong> Foi erguido no vale sedimentar drenado entre as colinas de Esquilino, Palatino e Célio, sobre o antigo lago artificial da Domus Aurea de Nero."
+        ]
       },
       {
         id: 3,
@@ -249,7 +265,15 @@
         correctQuad: "NL",
         realLat: 35.3606,
         realLon: 138.7275,
-        realText: "35° 21' 38'' N, 138° 43' 39'' L (Honshu, Japão)"
+        altitude: "3.776 m (ponto culminante do Japão)",
+        coordGMS: "35° 21' 38'' N, 138° 43' 39'' L",
+        coordGD: "+35.3606, +138.7275",
+        cityCountry: "Ilha de Honshu, Japão",
+        curiosities: [
+          "<strong>Última Erupção:</strong> Erupção Hoei, ocorrida em 16 de dezembro de 1707 (cinzas cobriram Tóquio a 100 km de distância).",
+          "<strong>Temporada de Escalada:</strong> Oficialmente de início de julho a início de setembro.",
+          "<strong>Tectônica:</strong> É um estratovulcão ativo situado na junção tripla entre as placas Tectônica Euroasiática, do Pacífico e das Filipinas."
+        ]
       },
       {
         id: 4,
@@ -260,12 +284,20 @@
         decA: 86.9250,
         decB: 27.9881,
         canonical: "Monte Everest",
-        accepted: ["monte everest", "everest", "pico everest"],
+        accepted: ["monte everest", "everest", "pico everest", "sagarmatha"],
         correctAxis: "BA",
         correctQuad: "NL",
         realLat: 27.9881,
         realLon: 86.9250,
-        realText: "+27.9881, +86.9250 (Himalaia, Nepal/China)"
+        altitude: "8.848,86 m",
+        coordGMS: "27° 59' 17'' N, 86° 55' 30'' L",
+        coordGD: "+27.9881, +86.9250",
+        cityCountry: "Cordilheira do Himalaia (Nepal / China)",
+        curiosities: [
+          "<strong>Orogênese:</strong> A montanha continua crescendo cerca de 4 mm ao ano devido à colisão contínua entre a Placa Indiana e a Placa Euroasiática.",
+          "<strong>Melhor época:</strong> Abril e maio (janela pré-monção com ventos menos severos).",
+          "<strong>Paleogeografia:</strong> O cume é composto por calcário marinho com fósseis de trilobitas do período Ordoviciano, evidenciando o antigo Mar de Tétis."
+        ]
       },
       {
         id: 5,
@@ -281,7 +313,15 @@
         correctQuad: "NL",
         realLat: 31.5000,
         realLon: 35.5000,
-        realText: "+31.5000, +35.5000 (Jordânia/Israel)"
+        altitude: "-435 m (depressão absoluta mais profunda em terra firme)",
+        coordGMS: "31° 30' 00'' N, 35° 30' 00'' L",
+        coordGD: "+31.5000, +35.5000",
+        cityCountry: "Vale do Rifte Jordano (Jordânia / Israel)",
+        curiosities: [
+          "<strong>Balanço Hídrico:</strong> Seu nível cai mais de 1 metro por ano; perdeu mais de 30% da sua superfície original nas últimas cinco décadas devido ao desvio das águas do Rio Jordão.",
+          "<strong>Salinidade:</strong> Cerca de 34% de sais dissolvidos (quase 10 vezes mais denso que a água oceânica comum).",
+          "<strong>Melhor época:</strong> Novembro a março, evitando as temperaturas que superam 45°C no verão árido."
+        ]
       },
 
       // --- QUADRANTE 2: NORTE / OESTE (N / O | + / -) ---
@@ -299,7 +339,15 @@
         correctQuad: "NO",
         realLat: 40.6892,
         realLon: -74.0445,
-        realText: "40° 41' 21'' N, 74° 02' 40'' O (Nova York, EUA)"
+        altitude: "3 m (Liberty Island) / 93 m (com pedestal)",
+        coordGMS: "40° 41' 21'' N, 74° 02' 40'' O",
+        coordGD: "+40.6892, -74.0445",
+        cityCountry: "Nova York, Estados Unidos",
+        curiosities: [
+          "<strong>Visitação:</strong> Cerca de 4 a 4,5 milhões de pessoas por ano.",
+          "<strong>Melhor época:</strong> Setembro a outubro (outono agradável e menor incidência de névoa marinha).",
+          "<strong>Geomorfologia Costeira:</strong> Localizada no estuário do Rio Hudson, sofre a influência direta das marés da Baía Superior de Nova York."
+        ]
       },
       {
         id: 7,
@@ -309,13 +357,21 @@
         valB: "51° 30' 03''",
         decA: 0.1245,
         decB: 51.5008,
-        canonical: "Big Ben / Palácio de Westminster",
-        accepted: ["big ben", "bigben", "westminster", "palacio de westminster"],
+        canonical: "Big Ben / Elizabeth Tower",
+        accepted: ["big ben", "bigben", "westminster", "palacio de westminster", "elizabeth tower"],
         correctAxis: "BA",
         correctQuad: "NO",
         realLat: 51.5008,
         realLon: -0.1245,
-        realText: "51° 30' 03'' N, 00° 07' 28'' O (Londres, Reino Unido)"
+        altitude: "6 m (várzea do Tâmisa) / 96 m (torre)",
+        coordGMS: "51° 30' 03'' N, 00° 07' 28'' O",
+        coordGD: "+51.5008, -0.1245",
+        cityCountry: "Londres, Reino Unido",
+        curiosities: [
+          "<strong>Referencial Cartográfico:</strong> Fica a apenas 9,5 km a oeste do Meridiano de Greenwich (marco 0° de longitude).",
+          "<strong>Melhor época:</strong> Junho a agosto (verão com dias mais longos no clima oceânico temperado).",
+          "<strong>Geotecnia:</strong> O relógio inclina-se ligeiramente cerca de 0,26 graus a noroeste devido às oscilações nos sedimentos de argila londrina ao longo de 160 anos."
+        ]
       },
       {
         id: 8,
@@ -331,7 +387,15 @@
         correctQuad: "NO",
         realLat: 20.6836,
         realLon: -88.5678,
-        realText: "20° 41' 01'' N, 88° 34' 04'' O (Iucatã, México)"
+        altitude: "25 m (plataforma cárstica)",
+        coordGMS: "20° 41' 01'' N, 88° 34' 04'' O",
+        coordGD: "+20.6836, -88.5678",
+        cityCountry: "Península de Iucatã, México",
+        curiosities: [
+          "<strong>Hidrologia Cárstica:</strong> A cidade dependia exclusivamente de cenotes (dolinhas de colapso que expõem o aquífero subterrâneo em rochas calcárias).",
+          "<strong>Arqueoastronomia:</strong> Nos equinócios de primavera e outono, a luz solar cria a ilusão da serpente Kukulkán descendo as escadas da pirâmide.",
+          "<strong>Melhor época:</strong> Novembro a março (estação seca, com menor probabilidade de tempestades tropicais)."
+        ]
       },
       {
         id: 9,
@@ -347,7 +411,15 @@
         correctQuad: "NO",
         realLat: 36.0544,
         realLon: -112.1401,
-        realText: "+36.0544, -112.1401 (Arizona, EUA)"
+        altitude: "2.134 m (borda sul) / 750 m (leito do rio)",
+        coordGMS: "36° 03' 16'' N, 112° 08' 24'' O",
+        coordGD: "+36.0544, -112.1401",
+        cityCountry: "Arizona, Estados Unidos",
+        curiosities: [
+          "<strong>Dimensões Geomorfológicas:</strong> Tem 446 km de extensão e gargantas que atingem até 1.800 metros de profundidade, escavadas pelo Rio Colorado.",
+          "<strong>Tempo Geológico:</strong> As rochas do embasamento no fundo da garganta (Xisto de Vishnu) datam de aproximadamente 1,8 bilhão de anos.",
+          "<strong>Melhor época:</strong> Março a maio e setembro a novembro (evitando as nevascas na borda norte e o calor no fundo do cânion)."
+        ]
       },
       {
         id: 10,
@@ -363,7 +435,15 @@
         correctQuad: "NO",
         realLat: 43.0828,
         realLon: -79.0742,
-        realText: "+43.0828, -79.0742 (EUA / Canadá)"
+        altitude: "155 m (nível superior) / queda de 51 m",
+        coordGMS: "43° 04' 58'' N, 79° 04' 27'' O",
+        coordGD: "+43.0828, -79.0742",
+        cityCountry: "Fronteira EUA / Canadá",
+        curiosities: [
+          "<strong>Vazão Hídrica:</strong> A vazão combinada ultrapassa 2.800 m³/s, correspondendo à maior drenagem fluvial entre os Grandes Lagos (Lago Erie para o Lago Ontário).",
+          "<strong>Erosão Regressiva:</strong> A escarpa recuou cerca de 11 km nos últimos 12.000 anos pela ação das águas pós-glaciais.",
+          "<strong>Melhor época:</strong> Junho a agosto (temperaturas amenas com todas as atrações fluviais operando)."
+        ]
       },
 
       // --- QUADRANTE 3: SUL / OESTE (S / O | - / -) ---
@@ -381,7 +461,15 @@
         correctQuad: "SO",
         realLat: -13.1631,
         realLon: -72.5450,
-        realText: "13° 09' 47'' S, 72° 32' 42'' O (Cusco, Peru)"
+        altitude: "2.430 m",
+        coordGMS: "13° 09' 47'' S, 72° 32' 42'' O",
+        coordGD: "-13.1631, -72.5450",
+        cityCountry: "Cusco, Peru",
+        curiosities: [
+          "<strong>Geomorfologia Andina:</strong> Localizada numa crista montanhosa granítica flanqueada pelo cânion sinuoso do Rio Urubamba.",
+          "<strong>Engenharia Antissísmica:</strong> Os muros incas de cantaria polida se assentam diretamente sobre o embasamento rochoso com tolerância milimétrica aos sismos andinos.",
+          "<strong>Melhor época:</strong> Maio a setembro (estação seca na serra peruana)."
+        ]
       },
       {
         id: 12,
@@ -397,7 +485,15 @@
         correctQuad: "SO",
         realLat: -27.1119,
         realLon: -109.3478,
-        realText: "27° 06' 43'' S, 109° 20' 52'' O (Chile)"
+        altitude: "100 m a 507 m (Vulcão Terevaka)",
+        coordGMS: "27° 06' 43'' S, 109° 20' 52'' O",
+        coordGD: "-27.1119, -109.3478",
+        cityCountry: "Território Especial de Rapa Nui, Chile",
+        curiosities: [
+          "<strong>Extremo Isolamento Geográfico:</strong> Dista 3.512 km da costa continental do Chile e 2.075 km da Ilha Pitcairn (seu vizinho habitado mais próximo).",
+          "<strong>Litologia dos Moais:</strong> As quase 900 estátuas foram esculpidas em tufo vulcânico compacto na cratera do vulcão extinto Rano Raraku.",
+          "<strong>Melhor época:</strong> Outubro a abril (verão no Pacífico Sul, com ventos oceânicos menos intensos)."
+        ]
       },
       {
         id: 13,
@@ -413,7 +509,15 @@
         correctQuad: "SO",
         realLat: -22.9519,
         realLon: -43.2105,
-        realText: "-22.9519, -43.2105 (Rio de Janeiro, Brasil)"
+        altitude: "710 m (topo do Morro do Corcovado)",
+        coordGMS: "22° 57' 07'' S, 43° 12' 38'' O",
+        coordGD: "-22.9519, -43.2105",
+        cityCountry: "Rio de Janeiro, Brasil",
+        curiosities: [
+          "<strong>Geologia dos Inselbergs:</strong> O Corcovado é um maciço gnáissico-granítico pré-cambriano inserido no bioma Mata Atlântica do Parque Nacional da Tijuca.",
+          "<strong>Visitação:</strong> Média de 1,9 a 2,2 milhões de turistas por ano.",
+          "<strong>Melhor época:</strong> Maio a setembro (inverno carioca: menor pluviosidade e ar mais límpido, evitando nuvens baixas no topo)."
+        ]
       },
       {
         id: 14,
@@ -429,7 +533,15 @@
         correctQuad: "SO",
         realLat: -25.6953,
         realLon: -54.4367,
-        realText: "-25.6953, -54.4367 (Brasil / Argentina)"
+        altitude: "160 m a 195 m",
+        coordGMS: "25° 41' 43'' S, 54° 26' 12'' O",
+        coordGD: "-25.6953, -54.4367",
+        cityCountry: "Foz do Iguaçu (Brasil) / Puerto Iguazú (Argentina)",
+        curiosities: [
+          "<strong>Recorde de Vazão:</strong> Em outubro de 2023, atingiu a marca histórica de 24,2 milhões de litros por segundo (16 vezes a média usual de 1.500 m³/s).",
+          "<strong>Geologia Estrutural:</strong> As 275 quedas saltam sobre derrames basálticos da Formação Serra Geral (Bacia do Paraná), datados do Cretáceo.",
+          "<strong>Melhor época:</strong> Março a maio (temperaturas equilibradas) ou dezembro/fevereiro para observar a vazão em nível máximo."
+        ]
       },
       {
         id: 15,
@@ -445,7 +557,15 @@
         correctQuad: "SO",
         realLat: -50.5794,
         realLon: -73.0475,
-        realText: "-50.5794, -73.0475 (Patagônia, Argentina)"
+        altitude: "185 m (nível do Lago Argentino) / parede de 60-70 m",
+        coordGMS: "50° 34' 46'' S, 73° 02' 51'' O",
+        coordGD: "-50.5794, -73.0475",
+        cityCountry: "Parque Nacional Los Glaciares, Santa Cruz, Argentina",
+        curiosities: [
+          "<strong>Dinâmica Glaciológica:</strong> É uma das poucas geleiras do planeta em equilíbrio relativo de massa; sua frente avança até represar o Braço Rico do Lago Argentino, gerando rompimentos cíclicos.",
+          "<strong>Área e Espessura:</strong> Possui 250 km² de extensão e profundidade de gelo que ultrapassa 700 metros em alguns trechos.",
+          "<strong>Melhor época:</strong> Novembro a março (verão austral patagônico com temperaturas entre 10°C e 18°C)."
+        ]
       },
 
       // --- QUADRANTE 4: SUL / LESTE (S / L | - / +) ---
@@ -463,7 +583,15 @@
         correctQuad: "SL",
         realLat: -7.6079,
         realLon: 110.2039,
-        realText: "07° 36' 29'' S, 110° 12' 14'' L (Java, Indonésia)"
+        altitude: "245 m (planície de Kedu)",
+        coordGMS: "07° 36' 29'' S, 110° 12' 14'' L",
+        coordGD: "-07.6079, +110.2039",
+        cityCountry: "Java Central, Indonésia",
+        curiosities: [
+          "<strong>Maior Templo Budista do Mundo:</strong> Construído no século IX com mais de 2 milhões de blocos de rocha vulcânica (andesito) talhados sem argamassa.",
+          "<strong>Vulcões Vizinhos:</strong> Situa-se entre dois estratovulcões gêmeos (Sundoro-Sumbing) e próximo ao Monte Merapi, tendo ficado séculos soterrado sob cinzas vulcânicas.",
+          "<strong>Melhor época:</strong> Junho a setembro (estação seca no clima tropical de monção)."
+        ]
       },
       {
         id: 17,
@@ -473,13 +601,21 @@
         valB: "25° 51' 24''",
         decA: 17.9244,
         decB: 25.8567,
-        canonical: "Cataratas Vitória (Victoria Falls)",
-        accepted: ["cataratas vitoria", "cataratas vitória", "victoria falls"],
+        canonical: "Cataratas Vitória (Victoria Falls / Mosi-oa-Tunya)",
+        accepted: ["cataratas vitoria", "cataratas vitória", "victoria falls", "mosi-oa-tunya"],
         correctAxis: "AB",
         correctQuad: "SL",
         realLat: -17.9244,
         realLon: 25.8567,
-        realText: "17° 55' 28'' S, 25° 51' 24'' L (Zâmbia / Zimbábue)"
+        altitude: "885 m (planalto) / queda de 108 m",
+        coordGMS: "17° 55' 28'' S, 25° 51' 24'' L",
+        coordGD: "-17.9244, +25.8567",
+        cityCountry: "Fronteira Zâmbia / Zimbábue",
+        curiosities: [
+          "<strong>A Maior Cortina Contínua d'Água:</strong> Tem 1.708 metros de largura e mais de 100 m de altura, vertendo as águas do Rio Zambeze numa fratura basáltica profunda.",
+          "<strong>Pulverização Atmosférica:</strong> A coluna de névoa gerada pela queda sobe a mais de 400 metros de altura e pode ser vista a 40 km de distância.",
+          "<strong>Melhor época:</strong> Fevereiro a maio (pico do fluxo de cheia após as chuvas da bacia hidrográfica)."
+        ]
       },
       {
         id: 18,
@@ -495,7 +631,15 @@
         correctQuad: "SL",
         realLat: -33.8568,
         realLon: 151.2153,
-        realText: "-33.8568, +151.2153 (Sydney, Austrália)"
+        altitude: "4 m (promontório de Bennelong Point)",
+        coordGMS: "33° 51' 24'' S, 151° 12' 55'' L",
+        coordGD: "-33.8568, +151.2153",
+        cityCountry: "Sydney, Nova Gales do Sul, Austrália",
+        curiosities: [
+          "<strong>Visitação:</strong> Mais de 10,9 milhões de visitantes circulam pelo local anualmente.",
+          "<strong>Geografia Litorânea:</strong> O edifício projeta-se na Baía de Sydney (Port Jackson), considerada um dos maiores portos naturais e rias submersas do planeta.",
+          "<strong>Melhor época:</strong> Setembro a novembro e março a maio (clima ameno com baixa incidência de tempestades)."
+        ]
       },
       {
         id: 19,
@@ -511,7 +655,15 @@
         correctQuad: "SL",
         realLat: -25.3444,
         realLon: 131.0369,
-        realText: "-25.3444, +131.0369 (Território do Norte, Austrália)"
+        altitude: "863 m acima do nível do mar (348 m acima da planície)",
+        coordGMS: "25° 20' 40'' S, 131° 02' 13'' L",
+        coordGD: "-25.3444, +131.0369",
+        cityCountry: "Território do Norte, Outback Australiano",
+        curiosities: [
+          "<strong>Morfologia de Inselberg:</strong> É um monólito gigantesco de arcósio (arenito rico em feldspato) cuja maior parte da estrutura estende-se por até 5 a 6 km sob o subsolo.",
+          "<strong>Propriedades Ópticas:</strong> A alta oxidação do ferro superficial faz com que o relevo mude visivelmente de cor ao longo do dia, variando de ocre a carmesim.",
+          "<strong>Melhor época:</strong> Maio a setembro (inverno árido, quando as temperaturas diurnas ficam em torno de 20°C a 25°C)."
+        ]
       },
       {
         id: 20,
@@ -527,11 +679,18 @@
         correctQuad: "SL",
         realLat: -3.0674,
         realLon: 37.3556,
-        realText: "-03.0674, +37.3556 (Tanzânia)"
+        altitude: "5.895 m (pico Uhuru - ponto mais alto da África)",
+        coordGMS: "03° 04' 03'' S, 37° 21' 20'' L",
+        coordGD: "-03.0674, +37.3556",
+        cityCountry: "Tanzânia",
+        curiosities: [
+          "<strong>Estratificação Bioclimática:</strong> Em sua ascensão atravessam-se 5 zonas ecológicas completas: floresta equatorial úmida, charneca, estepe alpina e deserto nival de cume.",
+          "<strong>Glaciares Equatoriais:</strong> As neves eternas do cume perderam mais de 85% de sua cobertura de gelo no último século em razão do aquecimento e aridez atmosférica.",
+          "<strong>Melhor época:</strong> Janeiro a março e junho a outubro (períodos mais secos e céus abertos na África Oriental)."
+        ]
       }
     ];
 
-    // Ícone verde persistente para os pontos confirmados
     const greenFoundIcon = new L.Icon({
       iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -626,7 +785,6 @@
         mapInstance.removeLayer(tempTestMarker);
       }
 
-      // Verifica se a combinação de eixos e quadrantes é exatamente a correta
       const isCorrectCombination = (axis === p.correctAxis && quad === p.correctQuad);
 
       tempTestMarker = L.marker([finalLat, finalLon]).addTo(mapInstance);
@@ -636,9 +794,8 @@
       const hemLabelLon = finalLon >= 0 ? "Leste" : "Oeste";
 
       if (isCorrectCombination) {
-        // Revela o nome em português no balão quando o aluno acerta os quadrantes
         tempTestMarker.bindPopup(`
-          <div style="font-size: 12px; font-family: sans-serif; min-width: 180px;">
+          <div style="font-size: 12px; font-family: sans-serif; min-width: 190px;">
             <div style="color: #0284c7; font-weight: bold; font-size: 11px; text-transform: uppercase;">
               <i class="fa-solid fa-location-dot"></i> Alvo Encontrado!
             </div>
@@ -646,19 +803,19 @@
               ${p.canonical}
             </b>
             <span style="color: #64748b; font-size: 11px;">(${p.category})</span>
-            <div style="color: #334155; margin-top: 5px; font-size: 11px; border-top: 1px solid #e2e8f0; pt: 3px;">
-              <b>Coordenadas:</b><br>${p.realText}
+            <div style="color: #334155; margin-top: 5px; font-size: 11px; border-top: 1px solid #e2e8f0; padding-top: 3px;">
+              <b>Altitude:</b> ${p.altitude}<br>
+              <b>Local:</b> ${p.cityCountry}
             </div>
           </div>
         `).openPopup();
       } else {
-        // Combinação errada: exibe apenas como ponto de teste sem revelar o alvo
         tempTestMarker.bindPopup(`
           <div style="font-size: 12px; font-family: sans-serif;">
             <b style="color: #dc2626;">Ponto em Teste (Incorreto)</b><br>
             Latitude: ${Math.abs(finalLat).toFixed(4)}° (${hemLabelLat})<br>
             Longitude: ${Math.abs(finalLon).toFixed(4)}° (${hemLabelLon})<br>
-            <span style="color: #64748b; font-size: 11px;">Este ponto não corresponde à feição procurada. Teste outros quadrantes ou inverta os eixos.</span>
+            <span style="color: #64748b; font-size: 11px;">Combinação fora do alvo. Alterne os eixos ou os quadrantes.</span>
           </div>
         `).openPopup();
       }
@@ -690,13 +847,34 @@
         score += 5;
         document.getElementById('scoreVal').innerText = score;
 
-        fb.className = 'p-3 rounded-lg text-xs leading-relaxed border bg-emerald-950/80 border-emerald-500/50 text-emerald-300';
+        const curiositiesHtml = p.curiosities.map(c => `<li>${c}</li>`).join('');
+
+        fb.className = 'p-4 rounded-xl text-xs leading-relaxed border bg-emerald-950/90 border-emerald-500/60 text-emerald-100 shadow-md';
         fb.innerHTML = `
-          <div class="font-bold text-emerald-200 flex items-center gap-1.5 mb-1">
-            <i class="fa-solid fa-circle-check"></i> Correto! Ponto confirmado e registrado no mapa.
+          <div class="font-bold text-emerald-200 text-sm flex items-center gap-2 border-b border-emerald-700/60 pb-2">
+            <i class="fa-solid fa-circle-check text-emerald-400"></i> Correto! Ponto confirmado e registrado no mapa.
           </div>
-          <div><strong>Local:</strong> ${p.canonical} (${p.category})</div>
-          <div class="text-[11px] text-emerald-400/90 mt-0.5"><strong>Coordenadas Oficiais:</strong> ${p.realText}</div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] pt-1 text-slate-200">
+            <div>
+              <span class="text-emerald-400 font-semibold">Local:</span> <strong>${p.canonical}</strong> (${p.category})<br>
+              <span class="text-emerald-400 font-semibold">Região:</span> ${p.cityCountry}
+            </div>
+            <div>
+              <span class="text-emerald-400 font-semibold">Altitude:</span> ${p.altitude}<br>
+              <span class="text-emerald-400 font-semibold">Coord. GMS:</span> ${p.coordGMS}<br>
+              <span class="text-emerald-400 font-semibold">Coord. GD:</span> ${p.coordGD}
+            </div>
+          </div>
+
+          <div class="border-t border-emerald-800/80 pt-2 text-[11px]">
+            <span class="font-bold text-amber-300 uppercase tracking-wide flex items-center gap-1.5 mb-1">
+              <i class="fa-solid fa-compass"></i> Fatos Geográficos & Dinâmica Ambiental:
+            </span>
+            <ul class="list-disc list-inside space-y-1 text-slate-300 pl-1">
+              ${curiositiesHtml}
+            </ul>
+          </div>
         `;
 
         document.getElementById('monumentInput').disabled = true;
@@ -714,11 +892,12 @@
 
         const confirmedMarker = L.marker([p.realLat, p.realLon], { icon: greenFoundIcon });
         confirmedMarker.bindPopup(`
-          <div style="font-size: 12px; font-family: sans-serif; min-width: 170px;">
+          <div style="font-size: 12px; font-family: sans-serif; min-width: 190px;">
             <b style="color: #047857; font-size: 13px;">✓ ${p.canonical}</b><br>
-            <span style="color: #64748b; font-size: 10px; text-transform: uppercase;">${p.category}</span>
-            <div style="color: #334155; margin-top: 3px; font-size: 11px;">
-              <b>Coordenadas:</b><br>${p.realText}
+            <span style="color: #64748b; font-size: 10px; text-transform: uppercase;">${p.category} | Alt: ${p.altitude}</span>
+            <div style="color: #334155; margin-top: 4px; font-size: 11px;">
+              <b>GMS:</b> ${p.coordGMS}<br>
+              <b>GD:</b> ${p.coordGD}
             </div>
           </div>
         `);
@@ -733,7 +912,7 @@
           <div class="font-bold text-rose-200 flex items-center gap-1.5 mb-1">
             <i class="fa-solid fa-circle-xmark"></i> Nome incorreto!
           </div>
-          <div>Ajuste os quadrantes ou eixos e clique em <em>"Testar e Plotar no Mapa"</em> até o marcador revelar o local correto.</div>
+          <div>Ajuste os quadrantes ou inverta os eixos e clique em <em>"Testar e Plotar no Mapa"</em> até o marcador revelar o local exato.</div>
         `;
       }
     }

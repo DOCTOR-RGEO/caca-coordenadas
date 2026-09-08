@@ -1,3 +1,8 @@
+Aqui está o código completo atualizado. Os dados institucionais foram inseridos no cabeçalho e reforçados no rodapé da página.
+
+Substitua todo o conteúdo do arquivo **`index.html`** no seu repositório GitHub pelo código abaixo:
+
+```html:index.html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -33,10 +38,11 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-between p-3 sm:p-6 font-sans">
 
-  <!-- Cabeçalho -->
+  <!-- Cabeçalho Atualizado -->
   <header class="w-full max-w-2xl text-center my-2">
-    <div class="inline-flex items-center gap-2 px-3 py-1 bg-sky-950/70 border border-sky-500/40 rounded-full text-sky-400 text-xs sm:text-sm font-semibold mb-2">
-      <i class="fa-solid fa-compass"></i> Laboratório de Geografia & Cartografia
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 bg-sky-950/80 border border-sky-500/50 rounded-full text-sky-300 text-xs sm:text-sm font-medium mb-2 shadow-sm">
+      <i class="fa-solid fa-compass text-sky-400"></i>
+      <span>Elaboração Prof. Dr. Ronaldo Missura &mdash; Laboratório de Representação da Terra &mdash; Departamento de Geografia da UFS</span>
     </div>
     <h1 class="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-300">
       Caçadores de Coordenadas
@@ -204,8 +210,10 @@
 
   </main>
 
-  <footer class="w-full max-w-2xl text-center my-3 text-[11px] text-slate-500">
-    Atividade prática de Cartografia e Sistemas de Coordenadas Geográficas.
+  <!-- Rodapé Atualizado -->
+  <footer class="w-full max-w-2xl text-center my-3 text-[11px] text-slate-400 space-y-1">
+    <div>Atividade prática de Cartografia e Sistemas de Coordenadas Geográficas.</div>
+    <div class="text-slate-500">Laboratório de Representação da Terra &bull; DGE / UFS</div>
   </footer>
 
   <script>
@@ -714,9 +722,8 @@
     let tempTestMarker = null;
     let persistentMarkersGroup = null;
 
-    // Cálculo da distância geodésica em quilômetros (Fórmula de Haversine)
     function calculateDistanceKm(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Raio médio da Terra em km
+      const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
       const a = 
@@ -832,7 +839,6 @@
       const fb = document.getElementById('resultFeedback');
       fb.classList.add('hidden');
 
-      // Oculta radar térmico
       const radar = document.getElementById('thermalRadar');
       radar.classList.add('hidden');
 
@@ -866,7 +872,6 @@
       const dist = calculateDistanceKm(finalLat, finalLon, p.realLat, p.realLon);
       const thermal = getThermalLevel(dist);
 
-      // Atualiza o radar térmico visual
       const radar = document.getElementById('thermalRadar');
       radar.classList.remove('hidden');
       radar.className = `mt-2 p-2.5 rounded-lg border transition-all text-xs ${thermal.badgeClass}`;
@@ -1051,3 +1056,5 @@
   </script>
 </body>
 </html>
+
+```
